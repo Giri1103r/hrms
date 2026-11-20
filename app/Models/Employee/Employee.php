@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models\Master;
+namespace App\Models\Employee;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Master\EmployeeTemp;
 use App\Models\Master\Location;
 use App\Scopes\TrashScope;
 use Illuminate\Support\Facades\Log;
@@ -36,10 +37,11 @@ class Employee extends Model
         'location',
         'login_id',
         'email',
-        'unit',
+        'shift',
         'department',
         'designation',
         'employee_status',
+        'employee_type',
         'reporting_manager',
         'status',
         'trash',
@@ -59,10 +61,10 @@ class Employee extends Model
     {
         $request = request();
         $search = '';
-        $query = $this->select('masters_employee.*', 'master_company.company_name', 'masters_department.department_name', 'masters_unit.unit_name');
+        $query = $this->select('masters_employee.*', 'master_company.company_name', 'masters_department.department_name', 'masters_shift.shift_name');
         $query = $query->leftJoin('master_company', 'masters_employee.company', '=', 'master_company.id');
         $query = $query->leftJoin('masters_department', 'masters_employee.department', '=', 'masters_department.id');
-        $query = $query->leftJoin('masters_unit', 'masters_employee.unit', '=', 'masters_unit.id');
+        $query = $query->leftJoin('masters_shift', 'masters_employee.shift', '=', 'masters_shift.id');
 
         $org_total =  $query;
         $org_total_counts = $org_total->count();
@@ -99,13 +101,13 @@ class Employee extends Model
 
             $query = $query->where('masters_employee.company', decryptId($request->company_id));
         }
-        if ($request->has('unit_id') && $request->unit_id) {
+        if ($request->has('shift_id') && $request->shift_id) {
 
-            $query = $query->where('masters_employee.unit', $request->unit_id);
+            $query = $query->where('masters_employee.shift', decryptId($request->shift_id));
         }
         if ($request->has('department_id') && $request->department_id) {
 
-            $query = $query->where('masters_employee.department', $request->department_id);
+            $query = $query->where('masters_employee.department', decryptId($request->department_id));
         }
         $data_count = $query;
         $total_records = $data_count->count();
@@ -132,10 +134,10 @@ class Employee extends Model
         return $this->select(
             'masters_employee.*',
             'masters_department.department_name',
-            'masters_unit.unit_name'
+            'masters_shift.shift_name'
         )
             ->leftJoin('masters_department', 'masters_employee.department', '=', 'masters_department.id')
-            ->leftJoin('masters_unit', 'masters_employee.unit', '=', 'masters_unit.id')
+            ->leftJoin('masters_shift', 'masters_employee.shift', '=', 'masters_shift.id')
             ->where('masters_employee.status', 1)
             ->where('masters_employee.id', $emp_id)
             ->first();
@@ -145,10 +147,10 @@ class Employee extends Model
         return $this->select(
             'masters_employee.*',
             'masters_department.department_name',
-            'masters_unit.unit_name'
+            'masters_shift.shift_name'
         )
             ->leftJoin('masters_department', 'masters_employee.department', '=', 'masters_department.id')
-            ->leftJoin('masters_unit', 'masters_employee.unit', '=', 'masters_unit.id')
+            ->leftJoin('masters_shift', 'masters_employee.shift', '=', 'masters_shift.id')
             ->where('masters_employee.status', 1)
             ->where('masters_employee.emp_id', $emp_code)
             ->first();
@@ -235,42 +237,71 @@ class Employee extends Model
 
 
 
-    public function updates($id)
+    /**
+     * Creates one employee from the Add form or one import row.
+     * $data holds resolved master ids (company, location, shift, department,
+     * blood_group) and names (designation, employee_status, employee_type).
+     */
+    public function storeEmployee(array $data, $createdBy)
     {
-        $request = request();
-        if ($request->has('user_role')) {
-            $decryptedRoleIds = array_map(function ($encryptedId) {
-                return $encryptedId;
-            }, $request->user_role);
-
-            $commaSeparatedRoles = implode(',', $decryptedRoleIds);
-        }
-
-        $update_array = [
-            'emp_id' => $request->emp_id ?? null,
-            'emp_name' => $request->emp_name ?? null,
-            'gender' => $request->gender ?? null,
-            'nationality' => $request->nationality ?? null,
-            'id_type' => $request->id_type  ?? null,
-            'id_number' => $request->id_number  ?? null,
-            'blood_group' => $request->blood_group  ?? null,
-            'email' => $request->email ?? null,
-            'joining_date' => DBdateformat($request->joining_date) ?? '',
-            'mobile_no' => $request->mobile_no ?? null,
-            'user_role' => $commaSeparatedRoles,
-            'company' => decryptId($request->company),
-            'location' => decryptId($request->location),
-            'unit' => decryptId($request->unit),
-            'department' => decryptId($request->department),
-            'designation' => $request->designation ?? null,
-            'reporting_manager' => $request->reporting_manager ?? null,
-            'employee_status' => $request->employee_status ?? null,
+        $record = [
+            'emp_id' => $data['emp_id'],
+            'emp_name' => $data['emp_name'],
+            'gender' => $data['gender'] ?? null,
+            'nationality' => $data['nationality'] ?? null,
+            'id_type' => $data['id_type'] ?? null,
+            'id_number' => $data['id_number'] ?? null,
+            'blood_group' => $data['blood_group'] ?? null,
+            'email' => $data['email'],
+            'mobile_no' => $data['mobile_no'] ?? null,
+            'joining_date' => $data['joining_date'] ?? null,
+            'company' => $data['company'],
+            'location' => $data['location'],
+            'shift' => $data['shift'],
+            'department' => $data['department'],
+            'designation' => $data['designation'] ?? null,
+            'employee_type' => $data['employee_type'] ?? null,
+            'employee_status' => $data['employee_status'] ?? null,
+            'reporting_manager' => $data['reporting_manager'] ?? null,
+            'user_role' => $data['user_role'],
             'status' => 1,
-            'updated_by' => Auth::id(),
-            'updated_at' => now(),
+            'error_status' => 0,
+            'created_by' => $createdBy,
+            'created_at' => now(),
         ];
 
-        $this->where('id', $id)->update($update_array);
+        return $this->create($record);
+    }
+
+    /**
+     * Updates one employee from the Edit form. Takes the same $data shape as
+     * storeEmployee(); the Employee ID is fixed once created, because the
+     * login (users.employee_id / username) is keyed on it.
+     */
+    public function updateEmployee($id, array $data, $updatedBy)
+    {
+        $this->where('id', $id)->update([
+            'emp_name' => $data['emp_name'],
+            'gender' => $data['gender'] ?? null,
+            'nationality' => $data['nationality'] ?? null,
+            'id_type' => $data['id_type'] ?? null,
+            'id_number' => $data['id_number'] ?? null,
+            'blood_group' => $data['blood_group'] ?? null,
+            'email' => $data['email'],
+            'mobile_no' => $data['mobile_no'] ?? null,
+            'joining_date' => $data['joining_date'] ?? null,
+            'company' => $data['company'],
+            'location' => $data['location'],
+            'shift' => $data['shift'],
+            'department' => $data['department'],
+            'designation' => $data['designation'] ?? null,
+            'employee_type' => $data['employee_type'] ?? null,
+            'employee_status' => $data['employee_status'] ?? null,
+            'reporting_manager' => $data['reporting_manager'] ?? null,
+            'user_role' => $data['user_role'],
+            'updated_by' => $updatedBy,
+            'updated_at' => now(),
+        ]);
 
         return $this->find($id);
     }
@@ -322,6 +353,11 @@ class Employee extends Model
         return $this->where('id', $id)->update($update_data);
     }
 
+    public function documents()
+    {
+        return $this->hasMany(EmployeeDocument::class, 'employee_id', 'id');
+    }
+
     public function reporting_manager()
     {
         return $this->belongsTo(User::class, 'reporting_manager_id', 'id');
@@ -331,10 +367,11 @@ class Employee extends Model
         $request = request();
 
         $search = '';
-        $query = $this->select('masters_employee.*', 'master_company.company_name', 'masters_department.department_name', 'masters_unit.unit_name');
+        $query = $this->select('masters_employee.*', 'master_company.company_name', 'masters_location.location_name', 'masters_department.department_name', 'masters_shift.shift_name');
         $query = $query->leftJoin('master_company', 'masters_employee.company', '=', 'master_company.id');
+        $query = $query->leftJoin('masters_location', 'masters_employee.location', '=', 'masters_location.id');
         $query = $query->leftJoin('masters_department', 'masters_employee.department', '=', 'masters_department.id');
-        $query = $query->leftJoin('masters_unit', 'masters_employee.unit', '=', 'masters_unit.id');
+        $query = $query->leftJoin('masters_shift', 'masters_employee.shift', '=', 'masters_shift.id');
         $query = $query->where('masters_employee.status', 1);
 
         if (!empty($request->search)) {
@@ -372,13 +409,13 @@ class Employee extends Model
 
             $query = $query->where('masters_employee.company', decryptId($request->company_id));
         }
-        if ($request->has('unit_id') && $request->unit_id) {
+        if ($request->has('shift_id') && $request->shift_id) {
 
-            $query = $query->where('masters_employee.unit', $request->unit_id);
+            $query = $query->where('masters_employee.shift', decryptId($request->shift_id));
         }
         if ($request->has('department_id') && $request->department_id) {
 
-            $query = $query->where('masters_employee.department', $request->department_id);
+            $query = $query->where('masters_employee.department', decryptId($request->department_id));
         }
         $query->orderBy('id', 'DESC');
         return  $query->get();
@@ -387,10 +424,22 @@ class Employee extends Model
     public function selectOne($id)
     {
 
-        $data = $this->select('masters_employee.*', 'master_company.company_name', 'masters_department.department_name', 'masters_unit.unit_name', 'template_user_role.role_name')
+        $data = $this->select(
+            'masters_employee.*',
+            'master_company.company_name',
+            'masters_location.location_name',
+            'masters_department.department_name',
+            'masters_shift.shift_name',
+            'masters_shift.start_time as shift_start_time',
+            'masters_shift.end_time as shift_end_time',
+            'masters_blood_group.blood_group_name',
+            'template_user_role.role_name'
+        )
             ->leftJoin('master_company', 'masters_employee.company', '=', 'master_company.id')
+            ->leftJoin('masters_location', 'masters_employee.location', '=', 'masters_location.id')
             ->leftJoin('masters_department', 'masters_employee.department', '=', 'masters_department.id')
-            ->leftJoin('masters_unit', 'masters_employee.unit', '=', 'masters_unit.id')
+            ->leftJoin('masters_shift', 'masters_employee.shift', '=', 'masters_shift.id')
+            ->leftJoin('masters_blood_group', 'masters_employee.blood_group', '=', 'masters_blood_group.id')
             ->leftJoin('template_user_role', 'masters_employee.user_role', '=', 'template_user_role.id')
             ->where('masters_employee.id', $id)
             ->first();

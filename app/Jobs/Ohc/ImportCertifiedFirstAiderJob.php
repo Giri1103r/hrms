@@ -8,7 +8,7 @@ use App\Models\Administration\UploadLog;
 use App\Models\Master\Unit;
 use App\Models\Master\Work;
 use App\Models\Administration\UploadLogError;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Department;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;

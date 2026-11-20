@@ -33,7 +33,7 @@ use App\Models\Master\TrainingSchedule;
 use App\Models\Master\NominationProcess;
 use App\Models\Master\Department;
 use App\Models\Master\Work;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Topic;
 use Illuminate\Support\Facades\Session;
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\Administration\Notification;
 use App\Models\Administration\UploadLogType;
 use App\Models\Administration\UserPermission;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Administration\UserRole;
 
 

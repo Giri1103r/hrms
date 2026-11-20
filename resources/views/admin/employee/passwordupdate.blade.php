@@ -1,6 +1,6 @@
 @extends('admin.layouts.admin')
 @section('title', 'Employee Password Reset')
-@section('pageurl', admin_url('employee/list'))
+@section('pageurl', admin_url('employee-management/employee/list'))
 
 @section('content')
     <div class="clearfix"></div>
@@ -15,7 +15,7 @@
                             <div class="card-header">
                                 {{-- <h4 class="card-title">{{ __('master.company_add') }}</h4> --}}
                                 <div class="align-back-btc d-flex justify-content-end align-items-center">
-                                    <x-button-back href="{{ admin_url('employee/list') }}"></x-button-back>
+                                    <x-button-back href="{{ admin_url('employee-management/employee/list') }}"></x-button-back>
 
                                 </div>
                             </div>
@@ -117,25 +117,25 @@
                                     <div class="mb-3 col-md-4 form-input">
                                         <label class="form-label view_label">{{ __('Company Name') }}</label>
                                         <div class="view_data">
-                                            {{ getCompanyname(isset($employee->company) ? $employee->company : '') }}
+                                            {{ $employee->company_name ?? '' }}
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-4 form-input">
                                         <label class="form-label view_label">{{ __('Location Name') }}</label>
                                         <div class="view_data">
-                                            {{ getLocationname(isset($employee->location) ? $employee->location : '') }}
+                                            {{ $employee->location_name ?? '' }}
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-4 form-input">
-                                        <label class="form-label view_label">{{ __('Unit Name') }}</label>
+                                        <label class="form-label view_label">{{ __('Shift') }}</label>
                                         <div class="view_data">
-                                            {{ getUnitname(isset($employee->unit) ? $employee->unit : '') }}
+                                            {{ $employee->shift_name ?? '' }}
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-4 form-input">
                                         <label class="form-label view_label">{{ __('Department Name') }}</label>
                                         <div class="view_data">
-                                            {{ getDepartment(isset($employee->department) ? $employee->department : '') }}
+                                            {{ $employee->department_name ?? '' }}
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-4 form-input">
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
                                 <form method="POST" id="employeeepass"
-                                    action="{{ admin_url('employee/passwordchange/submit') }}">
+                                    action="{{ admin_url('employee-management/employee/passwordchange/submit') }}">
                                     @csrf
                                     <input type="hidden" name="id" id="id"
                                         value="{{ encryptId($employee->id) }}">
@@ -198,7 +198,7 @@
                                     <div class="submit-button" style="text-align: right;">
                                         <x-button-submit class="submit"></x-button-submit>
                                         <x-button-reset class="submit"></x-button-reset>
-                                        <x-button-cancel href="{{ admin_url('employee/list') }}"></x-button-cancel>
+                                        <x-button-cancel href="{{ admin_url('employee-management/employee/list') }}"></x-button-cancel>
                                     </div>
                                 </form>
                             </div>

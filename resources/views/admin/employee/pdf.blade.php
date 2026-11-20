@@ -37,16 +37,16 @@
                             {{ $value->mobile_no }}
                         </td>
                         <td style='padding: 7px;border: 0.5px solid'>
-                            {{ getCompanyname($value->company) }}
+                            {{ $value->company_name }}
                         </td>
                         <td style='padding: 7px;border: 0.5px solid'>
-                            {{ getLocationname($value->location)}}
+                            {{ $value->location_name }}
                         </td>
                         <td style='padding: 7px;border: 0.5px solid'>
-                            {{ getUnitname($value->unit) }}
+                            {{ $value->shift_name }}
                         </td>
                         <td style='padding: 7px;border: 0.5px solid'>
-                            {{getDepartment($value->department) }}
+                            {{ $value->department_name }}
                         </td>
                         <td style='padding: 7px;border: 0.5px solid'>
                             {{ $value->employee_status }}

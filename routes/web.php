@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\Master\WorkController;
 use App\Http\Controllers\Admin\Master\CompanyController;
 use App\Http\Controllers\Admin\Master\DesignationController;
 
-use App\Http\Controllers\Admin\Master\EmployeeController;
+use App\Http\Controllers\Admin\Employee\EmployeeController;
 use App\Http\Controllers\Admin\Master\LocationController;
 use App\Http\Controllers\Admin\Master\WorkerLogController;
 use App\Http\Controllers\Admin\Master\DepartmentController;
@@ -116,12 +116,29 @@ Route::middleware(['securityheader'])->group(function () {
 
             Route::get('dashboard', [AdminController::class, 'index'])->middleware('role:dashboard,view');
             Route::get('home', [AdminController::class, 'index'])->name('home');
-            Route::get('profile', [AdminController::class, 'profileView']);
+            // The old profile page is replaced by Settings > Profile.
+            Route::get('profile', fn () => redirect(admin_url('settings')));
             Route::post('profile/image/update', [AdminController::class, 'profileUpdate']);
             Route::post('profile/signature-upload/update', [AdminController::class, 'signatureUpload']);
 
             Route::post('profile/update', [AdminController::class, 'Update']);
             Route::post('profile/password/update', [AdminController::class, 'changeProfilePassword']);
+
+            /* The signed-in user's own Settings page */
+            Route::controller(\App\Http\Controllers\Admin\SettingsPageController::class)
+                ->prefix('settings')
+                ->group(function () {
+                    Route::get('/', 'index');
+                    Route::post('profile', 'updateProfile');
+                    Route::post('avatar', 'updateAvatar');
+                    Route::post('signature', 'updateSignature');
+                    Route::post('appearance', 'updateAppearance');
+                    Route::post('password', 'updatePassword');
+                    Route::post('sessions/others/logout', 'logoutOtherSessions');
+                    Route::post('sessions/logout', 'logoutSession');
+                    Route::get('data/download', 'downloadData');
+                    Route::post('preferences', 'updatePreferences');
+                });
 
 
             Route::group(['prefix' => 'dashboard/'], function () {
@@ -280,6 +297,8 @@ Route::middleware(['securityheader'])->group(function () {
              */
             Route::get('location/ajax-list/{companyId}/{id}', [LocationController::class, 'list']);
             Route::get('location/all-ajax-list', [LocationController::class, 'alllist']);
+            Route::get('unit/ajax-list/{locationId}/{id}', [UnitController::class, 'list']);
+            Route::get('department/ajax-list/{unit_id}/{id}', [DepartmentController::class, 'list']);
 
             /**
              *  master
@@ -620,6 +639,41 @@ Route::middleware(['securityheader'])->group(function () {
                             Route::post('unique', 'Uniquecheck');
                         });
                 });
+
+                Route::controller(EmployeeController::class)
+                    ->prefix('employee')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('edit/{id}', 'edit');
+                        Route::post('edit/submit', 'update');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::post('delete', 'delete');
+
+                        Route::get('export/excel', 'exportExcel');
+                        Route::get('export/pdf', 'exportPdf');
+
+                        Route::get('import', 'import');
+                        Route::post('import/submit', 'importSubmit');
+
+                        Route::post('status', 'statusChange');
+                        Route::post('unique', 'Uniquecheck');
+
+                        Route::get('sampledownload', 'DownloadSample');
+
+                        Route::post('company-ajax', 'companyajax');
+                        Route::get('department-list/{location_id}/{id}', 'list');
+
+                        Route::get('passwordchange/{id}', 'PasswordUpdate');
+                        Route::post('passwordchange/submit', 'PasswordUpdateSubmit');
+                         });
             });
 
                 Route::group(['prefix' => 'administration/'], function () {

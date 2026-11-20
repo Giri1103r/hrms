@@ -6,7 +6,7 @@ use App\Models\Inspection\Ohc\CurrentNewExtCodeDialing;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Master\Department;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Unit;
 use App\Models\Administration\UploadLog;
 use Shuchkin\SimpleXLSX;

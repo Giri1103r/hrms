@@ -172,7 +172,7 @@
                                     style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;"
                                     valign="top" align="center">
                                     Powered by 
-                                    KARAM.
+                                    {{ config('app.name') }}.
                                 </td>
                             </tr>
                         </table>

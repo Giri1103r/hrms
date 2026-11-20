@@ -12,13 +12,13 @@ class PWAController extends Controller
         $url = admin_url(); // automatically handles local/UAT/prod
         // dd($url);
         $manifest = [
-            "name" => "KARAM EHS",
-            "short_name" => "KARAM EHS",
+            "name" => config('app.name'),
+            "short_name" => config('app.name'),
             "start_url" => $url,
             "scope" => $url,
             "display" => "standalone",
             "background_color" => "#ffffff",
-            "theme_color" => "#0d6efd",
+            "theme_color" => "#f7924a",
             "orientation" => "portrait",
             "icons" => [
                 [

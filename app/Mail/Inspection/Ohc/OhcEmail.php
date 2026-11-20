@@ -27,7 +27,7 @@ class OhcEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'KARAM' . ' - ' . $this->details['ohc_type'],
+            subject: config('app.name') . ' - ' . $this->details['ohc_type'],
         );
     }
 

@@ -1,13 +1,42 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@php
+    /* Per-user appearance from Settings (App\Support\UserPreferences). */
+    $uiPrefs = \App\Support\UserPreferences::for(Auth::user());
+    $uiFontRoot = \App\Support\UserPreferences::FONT_SIZES[$uiPrefs['font_size']]['root'];
+    $uiRootStyle = ($uiFontRoot ? "font-size:{$uiFontRoot};" : '') . \App\Support\UserPreferences::accentCss($uiPrefs['accent']);
+@endphp
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-app-theme="{{ $uiPrefs['theme'] }}"
+    data-density="{{ $uiPrefs['density'] }}" @if ($uiPrefs['reduced_motion']) data-reduced-motion @endif
+    @if ($uiRootStyle) style="{{ $uiRootStyle }}" @endif>
 
 <head>
+    <script nonce="projectcab">
+        /* Resolve Light / Dark / System into the theme's data-layout-color before first paint. */
+        (function() {
+            var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+            window.resolvedAppTheme = function() {
+                var choice = document.documentElement.getAttribute('data-app-theme') || 'light';
+                return choice === 'system' ? (media && media.matches ? 'dark' : 'light') : choice;
+            };
+            window.applyAppTheme = function() {
+                var mode = window.resolvedAppTheme();
+                document.documentElement.setAttribute('data-resolved-theme', mode);
+                if (document.body) {
+                    document.body.setAttribute('data-layout-color', mode);
+                    document.body.setAttribute('data-topbar-color', mode);
+                }
+            };
+            window.applyAppTheme();
+            document.addEventListener('DOMContentLoaded', window.applyAppTheme);
+            if (media && media.addEventListener) media.addEventListener('change', window.applyAppTheme);
+        })();
+    </script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | NeoEHS Product</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
     <link rel="shortcut icon" href="{{ url('public/assets/images/logo2.png') }}">
 
@@ -328,13 +357,15 @@
     @stack('style')
 
 
+    <link href="{{ url('public/assets/css/brand-theme.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <!-- body start -->
 
-<body class="loading" data-layout-color="light" data-layout-mode="default" data-layout-size="fluid"
-    data-topbar-color="light" data-leftbar-position="fixed" data-leftbar-color="dark" data-leftbar-size='default'
+<body class="loading" data-layout-color="{{ $uiPrefs['theme'] === 'dark' ? 'dark' : 'light' }}" data-layout-mode="default" data-layout-size="fluid"
+    data-topbar-color="{{ $uiPrefs['theme'] === 'dark' ? 'dark' : 'light' }}" data-leftbar-position="fixed" data-leftbar-color="dark" data-leftbar-size='default'
     data-sidebar-user='true'>
+    <script nonce="projectcab">window.applyAppTheme && window.applyAppTheme();</script>
 
     <!-- Begin page -->
     <div id="wrapper">
@@ -405,6 +436,10 @@
     <script src="{{ public_plugins('feather-icons/feather.min.js') }}"></script>
     <script src="{{ public_plugins('datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ public_plugins('datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script nonce="projectcab">
+        /* Default rows per page from Settings > App Preferences; a list can still set its own. */
+        $.extend(true, $.fn.dataTable.defaults, { pageLength: {{ $uiPrefs['page_size'] }} });
+    </script>
     <script src="{{ public_plugins('datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
 
     <script src="{{ public_plugins('datatables.net-buttons/js/buttons.print.min.js') }}"></script>

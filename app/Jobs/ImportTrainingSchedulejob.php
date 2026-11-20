@@ -18,7 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Master\Unit;
 use App\Models\Master\Department;
 use App\Models\Master\Topic;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\TrainingMatrix;
 use App\Models\Master\TrainingSchedule;
 use App\Models\Master\Venue;

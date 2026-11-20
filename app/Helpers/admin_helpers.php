@@ -10,7 +10,7 @@ use App\Models\Master\Topic;
 use App\Models\Administration\Notification;
 use App\Models\Master\Company;
 use App\Models\IMS\Master\Hira;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Location;
 
 use App\Models\Administration\UserRole;
@@ -94,6 +94,7 @@ if (!function_exists('get_admin_menu')) {
 
 
         $html .= '<ul id="side-menu">';
+        $html .= '<li class="menu-title">Main Menu</li>';
 
         if (count($menu_array) > 0) {
             foreach ($menu_array[0] as $key => $value) {

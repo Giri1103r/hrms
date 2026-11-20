@@ -19,7 +19,7 @@
 
                             <form id="resetform" action="{{ admin_url('password/forgot/submit') }}" method="post" autocomplete="false">
                                 <div class="text-center mb-4">
-                                    <img  src="{{ public_image('energy-logo.png') }}" alt="logo" style="width: 145px;">
+                                    <img  src="{{ public_image('logo.png') }}" alt="logo" style="width: 145px;">
 
                                 </div>
                                 @csrf

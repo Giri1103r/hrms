@@ -1,6 +1,6 @@
 @extends('admin.layouts.admin')
 @section('title', 'Employee Master')
-@section('pageurl', admin_url('employee/list'))
+@section('pageurl', admin_url('employee-management/employee/list'))
 
 
 @section('content')
@@ -10,9 +10,16 @@
 
                 <div class="card">
                     <h4 class="card-title"></h4>
-                    <div class="d-flex justify-content-end align-items-center me-2">
+                    <div class="d-flex flex-wrap justify-content-end gap-2 p-2">
 
-                        <x-button-filter dataId="" class="search" href=""></x-button-filter>
+                        <x-button-filter dataId="" class="search me-1" href=""></x-button-filter>
+                        @if (CheckUserPermission('export'))
+                            <x-button-import href="{{ admin_url('employee-management/employee/import') }}"></x-button-import>
+                        @endif
+                        @if (CheckUserPermission('add'))
+                            <x-button-add dataId="" class="add btn btn-primary ms-1"
+                                href="{{ admin_url('employee-management/employee/add') }}">{{ __('common.add') }}</x-button-add>
+                        @endif
                     </div>
                     <div id="search" class="collapse">
                         <form action="" id="formsearch">
@@ -59,15 +66,13 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <div class="form-group form-input">
-                                                <label class="form-label ">Unit Name</label>
-
-                                                <select name="unit_id" id="unit_id" class="form-control single-select"
+                                                <label class="form-label ">Shift</label>
+                                                <select name="shift_id" id="shift_id" class="form-control single-select"
                                                     style="width: 100%">
-                                                    <option value="">Select the unit</option>
-                                                    {{-- @foreach ($unit as $list)
-                                                        <option value="{{ $list->id }}">
-                                                            {{ $list->unit_name }}</option>
-                                                    @endforeach --}}
+                                                    <option value="">Select Shift</option>
+                                                    @foreach ($shiftList as $shift)
+                                                        <option value="{{ encryptId($shift->id) }}">{{ $shift->shift_name }}</option>
+                                                    @endforeach
                                                 </select>
 
 
@@ -116,8 +121,6 @@
                                         <th>Employee Name</th>
                                         <th>Employee Email</th>
                                         <th>Phone Number</th>
-                                        <th data-priority="3">Department Name</th>
-                                        <th>Unit Name</th>
                                         <th>Employee Status</th>
                                         <th>Reporting Manager</th>
                                         <th data-priority="2">{{ __('common.status') }} </th>
@@ -143,59 +146,30 @@
                 var firstTh = $('.datatable-list thead th:first');
                 firstTh.removeClass('sorting_asc');
             });
+            /* Company filter > Department filter */
             $(document).on('change', '#company_id', function() {
                 var company_id = $(this).val();
+                var $department = $('#department_id');
+                $department.empty().append('<option value="">Select Department Name</option>');
 
                 if (company_id) {
                     $.ajax({
-                        url: "{{ admin_url('employee/company-ajax') }}",
+                        url: "{{ admin_url('employee-management/employee/company-ajax') }}",
                         type: 'POST',
                         dataType: 'json',
                         data: {
                             company_id: company_id,
-                            _token: '{{ csrf_token() }}' // Include CSRF token
+                            _token: '{{ csrf_token() }}'
                         },
                         success: function(data) {
-                            // Populate the unit dropdown
-                            var unitOptions = '<option value="">Select Unit Name</option>';
-                            $.each(data.unit, function(index, unit) {
-                                unitOptions +=
-                                    `<option value="${unit.id}">${unit.unit_name}</option>`;
+                            $.each(data.department, function(index, department) {
+                                $department.append($('<option>', { value: department.id, text: department.name }));
                             });
-                            $('#unit_id').html(unitOptions);
                         },
-                        error: function(xhr) {
-                            alert('Error fetching units. Please try again.');
-                        }
-                    });
-                } else {
-                    $('#unit_id').empty().append('<option value="">Select Unit Name</option>');
-                }
-            });
-
-            $(document).on('change', '#unit_id', function() {
-                var unitId = $(this).val();
-
-                if (unitId) {
-                    $.ajax({
-                        url: "{{ admin_url('employee/ajax-list') }}/" + unitId + "/0",
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            console.log(data);
-                            var departmentOptions = '<option value="">Select Department</option>';
-                            $.each(data, function(index, department) {
-                                departmentOptions +=
-                                    `<option value="${department.id}">${department.department_name}</option>`;
-                            });
-                            $('#department_id').html(departmentOptions);
-                        },
-                        error: function(xhr) {
+                        error: function() {
                             alert('Error fetching departments. Please try again.');
                         }
                     });
-                } else {
-                    $('#department_id').empty().append('<option value="">Select Department</option>');
                 }
             });
 
@@ -225,7 +199,7 @@
                     },
 
                     ajax: {
-                        url: "{{ admin_url('employee/list') }}",
+                        url: "{{ admin_url('employee-management/employee/list') }}",
                         type: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
@@ -233,7 +207,7 @@
                         },
                         data: function(d) {
                             d.company_id = $('#company_id').val();
-                            d.unit_id = $('#unit_id').val();
+                            d.shift_id = $('#shift_id').val();
                             d.department_id = $('#department_id').val();
                             d.emp_id = $('#emp_id').val();
                             d.emp_name = $('#emp_name').val();
@@ -270,16 +244,6 @@
                             data: 'mobile_no',
                             name: 'mobile_no'
                         },
-
-                        {
-                            data: 'department',
-                            name: 'department'
-                        },
-                        {
-                            data: 'unit',
-                            name: 'unit'
-                        },
-
                         {
                             data: 'employee_status',
                             name: 'employee_status'
@@ -330,7 +294,7 @@
                                         emp_name = $('#emp_name').val();
                                         email = $('#email').val();
                                         employee_status = $('#employee_status').val();
-                                        unit_id = $('#unit_id').val();
+                                        shift_id = $('#shift_id').val();
                                         company_id = $('#company_id').val();
                                         department_id = $('#department_id').val();
 
@@ -338,14 +302,14 @@
                                         $(".dt-button").removeClass('processing');
                                         $('body').click();
                                         window.location.href =
-                                            "{{ admin_url('employee/export/pdf') }}" +
+                                            "{{ admin_url('employee-management/employee/export/pdf') }}" +
                                             '?search=' + searchValue +
                                             '&emp_id=' + emp_id +
                                             '&emp_name=' + emp_name +
                                             '&email=' + email +
                                             '&company_id=' + company_id +
                                             '&department_id=' + department_id +
-                                            '&unit_id=' + unit_id +
+                                            '&shift_id=' + shift_id +
 
                                             '&employee_status=' + employee_status +
                                             '&status=' + status
@@ -362,13 +326,13 @@
                                         email = $('#email').val();
                                         employee_status = $('#employee_status').val();
                                         status = $('#status').val();
-                                        unit_id = $('#unit_id').val();
+                                        shift_id = $('#shift_id').val();
                                         company_id = $('#company_id').val();
                                         department_id = $('#department_id').val();
                                         $(".dt-button").removeClass('processing');
                                         $('body').click();
                                         window.location.href =
-                                            "{{ admin_url('employee/export/excel') }}" +
+                                            "{{ admin_url('employee-management/employee/export/excel') }}" +
                                             '?search=' + searchValue +
                                             '&emp_id=' + emp_id +
                                             '&emp_name=' + emp_name +
@@ -376,7 +340,7 @@
                                             '&employee_status=' + employee_status +
                                             '&company_id=' + company_id +
                                             '&department_id=' + department_id +
-                                            '&unit_id=' + unit_id +
+                                            '&shift_id=' + shift_id +
                                             '&status=' + status
                                     } // Closing brace for action function
                                 }
@@ -439,7 +403,7 @@
 
                         if (result.value) {
                             $.ajax({
-                                url: "{{ admin_url('employee/status') }}",
+                                url: "{{ admin_url('employee-management/employee/status') }}",
                                 type: 'post',
 
                                 data: {
