@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | KARAM</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
     <link rel="shortcut icon" href="{{ url('public/assets/images/logo.png') }}">
     <link rel="manifest" href="{{ url('manifest') }}">
@@ -23,6 +23,7 @@
 
     @stack('style')
 
+    <link href="{{ url('public/assets/css/brand-theme.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="loading authentication-bg authentication-bg-pattern">

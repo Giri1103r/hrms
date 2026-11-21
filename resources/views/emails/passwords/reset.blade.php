@@ -20,7 +20,7 @@
                             <form id="resetform" action="{{ admin_url('password/finalreset/submit') }}" method="post"
                                 autocomplete="false">
                                 <div class="text-center mb-4">
-                                    <img src="{{ public_image('energy-logo.png') }}" alt="logo"
+                                    <img src="{{ public_image('logo.png') }}" alt="logo"
                                         style="width: 145px;">
                                 </div>
                                 <h3 class="text-center mb-2 text-dark">New Password</h3>

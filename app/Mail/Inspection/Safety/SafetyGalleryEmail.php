@@ -26,7 +26,7 @@ class SafetyGalleryEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'KARAM' . ' - '  . $this->details['safety_type'],
+            subject: config('app.name') . ' - '  . $this->details['safety_type'],
         );
     }
 

@@ -100,9 +100,13 @@
                 </div>
 
                 <!-- item-->
-                <a href="{{ admin_url('profile') }}" class="dropdown-item notify-item">
+                <a href="{{ admin_url('administration/settings/list') }}" class="dropdown-item notify-item">
                     <i class="fe-user"></i>
                     <span>My Account</span>
+                </a>
+                <a href="{{ admin_url('administration/settings/list?section=appearance') }}" class="dropdown-item notify-item">
+                    <i class="fe-settings"></i>
+                    <span>Settings</span>
                 </a>
 
 

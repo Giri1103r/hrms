@@ -8,11 +8,11 @@ use Str;
 use Mail;
 use App\Models\User;
 use Shuchkin\SimpleXLSX;
-use App\Models\UploadLog;
+use App\Models\Administration\UploadLog;
 use Illuminate\Bus\Queueable;
 use App\Models\Master\Factory;
 
-use App\Models\UploadLogError;
+use App\Models\Administration\UploadLogError;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,7 +33,7 @@ use App\Models\Master\TrainingSchedule;
 use App\Models\Master\NominationProcess;
 use App\Models\Master\Department;
 use App\Models\Master\Work;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Topic;
 use Illuminate\Support\Facades\Session;
 

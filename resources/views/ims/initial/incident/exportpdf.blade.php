@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Incident | KARAM</title>
+    <title>Incident | {{ config('app.name') }}</title>
     <meta charset="UTF-8">
     <style>
         .badge {

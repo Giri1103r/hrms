@@ -17,6 +17,11 @@ class LanguageManager
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // A language chosen in Settings follows the user to every new sign-in.
+        if (!session()->has('locale') && auth()->check() && auth()->user()->language) {
+            session()->put('locale', auth()->user()->language);
+        }
+
         if (session()->has('locale')) {
             App::setLocale(session()->get('locale'));
         }

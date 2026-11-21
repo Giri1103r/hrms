@@ -35,7 +35,7 @@
 @endsection
 
 @push('script')
-    <script type="text/javascript" nonce="neoehsscript">
+    <script type="text/javascript" nonce="hrmsscript">
         $(function() {
             $('#resetform').validate({
                 rules: {

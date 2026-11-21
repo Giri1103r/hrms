@@ -18,7 +18,7 @@ use App\Models\Master\Worktemp;
 use App\Models\Master\EmployeeTemp;
 use App\Models\User;
 use App\Models\Master\Work;
-use App\Models\Master\Employee;
+use App\Models\Employee\Employee;
 use App\Models\Master\Company;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -552,12 +552,6 @@ class CronController extends Controller
 
                 $employee = $this->employee->store($emp_temp);
                 $users = $this->user->store($employee);
-                // $allowedEmails = [
-                //     'keshav.kashyap@karam.in',
-                //     'vinay.kumar@karam.in',
-                //     'prashant.singh2@karam.in'
-                // ];
-
                 foreach ($users as $user) {
 
                     // if (!empty($user['created_at']) && !empty($user) && isset($user['email'])) {

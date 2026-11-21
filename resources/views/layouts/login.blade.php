@@ -13,7 +13,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') | KARAM</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
 
     <!-- Vendors Style-->
@@ -28,6 +28,7 @@
     @stack('style')
 
 
+    <link href="{{ url('public/assets/css/brand-theme.css') }}" rel="stylesheet" type="text/css" />
 </head>
 <body class="hold-transition theme-primary bg-img"
     style="background-image: url({{ public_image('common/neologin.png') }}); background-size:100% 100vh;">
@@ -40,8 +41,8 @@
                     <div class="col-lg-5 col-md-5 col-12">
                         <div class="bg-white rounded30 shadow-lg">
                             <div class="content-top-agile p-20 pb-0">
-                                <img style="width: 200px; padding-left: 23px; margin-bottom:5px;" src="{{asset('public/assets/images/common/logo/logo.jpg')}}" alt="">
-                                <p class="mb-0">Sign in to continue to Indialand Shuttle </p>
+                                <img style="width: 200px; padding-left: 23px; margin-bottom:5px;" src="{{asset('public/assets/images/logo.png')}}" alt="">
+                                <p class="mb-0">Sign in to continue to {{ config('app.name') }} </p>
                             </div>
                             <div class="p-40">
                                 @yield('content')

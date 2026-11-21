@@ -1,0 +1,658 @@
+/*
+ * Brand theme: the login page's orange -> yellow palette applied to the whole app.
+ * Loaded after every other stylesheet in the admin and auth layouts, so it only
+ * needs to restate what changes. Edit the --brand-* values to retheme everything.
+ */
+:root,
+body {
+    --brand-orange: #f7924a;
+    --brand-yellow: #fdc830;
+    --brand-gradient: linear-gradient(90deg, #f7924a 0%, #fdc830 100%);
+    --brand-orange-dark: #e57a2e;
+    /* Darker shade for orange text on white, so it stays readable. */
+    --brand-text: #b45309;
+    --brand-soft: #fff3d6;
+    --brand-soft-strong: #fde7b8;
+    --brand-ink: #1f2937;
+    --brand-orange-rgb: 247, 146, 74;
+
+    /* Adminto theme variables that carried the old blue / teal */
+    --ct-primary: var(--brand-orange);
+    --ct-primary-rgb: var(--brand-orange-rgb);
+    --ct-blue: var(--brand-orange);
+    --ct-link-color: var(--brand-text);
+    --ct-link-hover-color: var(--brand-orange-dark);
+    --ct-component-active-bg: var(--brand-orange);
+    --ct-progress-bar-bg: var(--brand-orange);
+    --ct-menu-item-hover: var(--brand-orange);
+    --ct-menu-sub-item-active: var(--brand-orange);
+    --bs-primary: var(--brand-orange);
+    --bs-primary-rgb: var(--brand-orange-rgb);
+    --bs-link-color: var(--brand-text);
+    --bs-link-hover-color: var(--brand-orange-dark);
+}
+
+body[data-layout-color="light"] {
+    --ct-body-bg: #f6f3ee;
+}
+
+/* Data table headers: warm header instead of navy (dark mode keeps its own). */
+:root {
+    --dt-header-background-color: var(--brand-soft-strong) !important;
+    --dt-header-text-color: var(--brand-ink) !important;
+}
+
+a {
+    color: var(--brand-text);
+}
+
+a:hover {
+    color: var(--brand-orange-dark);
+}
+
+/* ---------- top bar ---------- */
+.navbar-custom {
+    background: var(--brand-gradient);
+}
+
+/* ---------- left menu: dark panel, soft pills (dark leftbar only) ---------- */
+body[data-leftbar-color=dark] {
+    --nav-bg: #141414;
+    --nav-border: #232323;
+    --nav-title: #616161;
+    --nav-text: #a6a6a6;
+    --nav-icon: #7a7a7a;
+    --nav-hover: #1f1f1f;
+    --nav-active: #272727;
+}
+
+body[data-leftbar-color=dark] .left-side-menu {
+    background-color: var(--nav-bg);
+    border-right: 1px solid var(--nav-border);
+    box-shadow: none;
+    padding: 12px 0;
+}
+
+/* Logo area above the menu matches the panel. */
+body[data-leftbar-color=dark] .navbar-custom .logo-box {
+    background-color: var(--nav-bg);
+    border-right: 1px solid var(--nav-border);
+}
+
+body[data-leftbar-color=dark] .navbar-custom .logo-box .logo-lg,
+body[data-leftbar-color=dark] .navbar-custom .logo-box .logo-sm {
+    background: transparent;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .menu-title {
+    color: var(--nav-title);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 12px 24px 6px;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a {
+    color: var(--nav-text);
+    background: transparent;
+    margin: 2px 12px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    padding-right: 30px;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a i {
+    flex: none;
+    color: var(--nav-icon);
+    width: 20px;
+    margin: 0 10px 0 0;
+    font-size: 1rem;
+    transition: color 0.15s;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a:hover,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a:focus {
+    color: #fff;
+    background: var(--nav-hover);
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a:hover i,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a:focus i {
+    color: #d4d4d4;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a:active,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a.active,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li.menuitem-active > a {
+    color: #fff;
+    background: var(--nav-active);
+    box-shadow: inset 0 0 0 1px #2f2f2f;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li > a.active i,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li.menuitem-active > a i {
+    color: var(--brand-orange);
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .menu-arrow {
+    color: #666;
+    right: 14px;
+}
+
+/* Sub menus. The theme (app.css) indents every nested list by 34px; drop that
+   so the indent comes only from the link padding below, which lines a child's
+   label up under its parent's label (12 margin + 12 padding + 20 icon + 10 gap). */
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu > ul > li ul,
+body[data-leftbar-color=dark] .left-side-menu .nav-second-level,
+body[data-leftbar-color=dark] .left-side-menu .nav-thrid-level {
+    padding-left: 0;
+}
+
+body[data-leftbar-color=dark] .left-side-menu .nav-second-level {
+    padding-top: 2px;
+    padding-bottom: 4px;
+}
+
+body[data-leftbar-color=dark] .left-side-menu .nav-second-level li a,
+body[data-leftbar-color=dark] .left-side-menu .nav-thrid-level li a {
+    position: relative;
+    color: #8f8f8f;
+    background: transparent;
+    margin: 1px 12px;
+    padding: 7px 12px 7px 42px;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    text-align: left;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+body[data-leftbar-color=dark] .left-side-menu .nav-thrid-level li a {
+    padding-left: 56px;
+}
+
+body[data-leftbar-color=dark] .left-side-menu .nav-second-level li a:focus,
+body[data-leftbar-color=dark] .left-side-menu .nav-second-level li a:hover,
+body[data-leftbar-color=dark] .left-side-menu .nav-thrid-level li a:focus,
+body[data-leftbar-color=dark] .left-side-menu .nav-thrid-level li a:hover {
+    background-color: var(--nav-hover);
+    color: #fff;
+}
+
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-second-level li a.active,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-second-level li a.activ,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-thrid-level li a.activ,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-thrid-level li a.active,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-second-level li.menuitem-active > a {
+    background-color: var(--nav-hover);
+    color: #fff;
+}
+
+/* Small brand dot marks the current page in a sub menu. */
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-second-level li a.active::before,
+body[data-leftbar-color=dark] .left-side-menu #sidebar-menu .nav-thrid-level li a.active::before {
+    content: "";
+    position: absolute;
+    left: 28px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-orange);
+    transform: translateY(-50%);
+}
+
+body[data-leftbar-color=dark] .left-side-menu .simplebar-scrollbar::before {
+    background: #3a3a3a;
+}
+
+/* Collapsed (icons only) sidebar: hover fly-out stays dark. */
+body[data-leftbar-color=dark][data-leftbar-size=condensed] .left-side-menu #sidebar-menu > ul > li > a {
+    margin: 2px 8px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+body[data-leftbar-color=dark][data-leftbar-size=condensed] .left-side-menu #sidebar-menu > ul > li > a i {
+    margin: 0;
+}
+
+body[data-leftbar-color=dark][data-leftbar-size=condensed] .left-side-menu #sidebar-menu > ul > li:hover > a,
+body[data-leftbar-color=dark][data-leftbar-size=condensed] .left-side-menu #sidebar-menu > ul > li:hover > div,
+body[data-leftbar-color=dark][data-leftbar-size=condensed] .left-side-menu #sidebar-menu > ul > li:hover > ul {
+    background: var(--nav-active);
+    color: #fff;
+}
+
+/* ---------- buttons ---------- */
+.btn-primary,
+.btn-blue {
+    color: #fff;
+    background: var(--brand-gradient);
+    border-color: var(--brand-orange);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle,
+.btn-blue:hover,
+.btn-blue:focus,
+.btn-blue:active {
+    color: #fff;
+    background: linear-gradient(90deg, #e57a2e 0%, #f5b414 100%);
+    border-color: var(--brand-orange-dark);
+}
+
+.btn-primary:focus,
+.btn-primary:focus-visible,
+.btn-outline-primary:focus,
+.btn-outline-primary:focus-visible {
+    box-shadow: 0 0 0 0.2rem rgba(var(--brand-orange-rgb), 0.35);
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    color: #fff;
+    background: var(--brand-gradient);
+    border-color: var(--brand-orange);
+    opacity: 0.6;
+}
+
+.btn-outline-primary,
+.btn-outline-blue {
+    color: var(--brand-text);
+    border-color: var(--brand-orange);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.btn-outline-blue:hover {
+    color: #fff;
+    background-color: var(--brand-orange);
+    border-color: var(--brand-orange);
+}
+
+.btn-soft-primary,
+.btn-soft-blue {
+    color: var(--brand-text);
+    background-color: rgba(var(--brand-orange-rgb), 0.15);
+    border-color: rgba(var(--brand-orange-rgb), 0.15);
+}
+
+.btn-soft-primary:hover,
+.btn-soft-blue:hover {
+    color: #fff;
+    background-color: var(--brand-orange);
+}
+
+/* ---------- colour utilities ---------- */
+.bg-primary,
+.badge.bg-primary,
+.bg-blue {
+    background-color: var(--brand-orange) !important;
+}
+
+.bg-soft-primary,
+.badge-soft-primary {
+    background-color: rgba(var(--brand-orange-rgb), 0.18) !important;
+    color: var(--brand-text) !important;
+}
+
+.text-primary,
+.text-blue,
+.link-primary {
+    color: var(--brand-text) !important;
+}
+
+.border-primary {
+    border-color: var(--brand-orange) !important;
+}
+
+.progress-bar {
+    background-color: var(--brand-orange);
+}
+
+/* ---------- forms ---------- */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--brand-yellow);
+    box-shadow: 0 0 0 0.2rem rgba(253, 200, 48, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--brand-orange);
+    border-color: var(--brand-orange);
+}
+
+.form-check-input:focus {
+    border-color: var(--brand-yellow);
+    box-shadow: 0 0 0 0.2rem rgba(253, 200, 48, 0.25);
+}
+
+.form-switch .form-check-input:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fdc830'/%3e%3c/svg%3e");
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    border-color: #e3d5bf;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple,
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--brand-yellow);
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: var(--brand-orange);
+    color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--brand-orange);
+    border-color: var(--brand-orange);
+    color: #fff;
+}
+
+/* ---------- navigation pieces ---------- */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background: var(--brand-gradient);
+    color: #fff;
+}
+
+.nav-tabs .nav-link.active,
+.nav-bordered .nav-link.active {
+    color: var(--brand-text);
+    border-bottom-color: var(--brand-orange);
+}
+
+.page-link {
+    color: var(--brand-text);
+}
+
+.page-item.active .page-link,
+.dataTables_paginate .page-item.active .page-link {
+    background-color: var(--brand-orange);
+    border-color: var(--brand-orange);
+    color: #fff;
+}
+
+.page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(var(--brand-orange-rgb), 0.3);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--brand-orange);
+    color: #fff;
+}
+
+/* ---------- cards & section headers ---------- */
+.card-header-inner {
+    background: var(--brand-soft);
+    color: #000;
+    border-left: 4px solid var(--brand-orange);
+}
+
+/* The views mark these headings text-white (or inline color:#fff) for the old grey bar. */
+.card-header-inner h1,
+.card-header-inner h2,
+.card-header-inner h3,
+.card-header-inner h4,
+.card-header-inner h5,
+.card-header-inner h6,
+.card-header-inner .text-white {
+    color: #000 !important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
+    background-color: var(--brand-orange);
+}
+
+/* ---------- date pickers ---------- */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected:hover {
+    background: var(--brand-orange);
+    border-color: var(--brand-orange);
+}
+
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.active,
+.datepicker table tr td span.active {
+    background-color: var(--brand-orange) !important;
+    background-image: none !important;
+    color: #fff !important;
+}
+
+/* ---------- popups ---------- */
+.swal2-popup .swal2-styled.swal2-confirm {
+    background: var(--brand-gradient) !important;
+    border: none;
+}
+
+.swal2-popup .swal2-styled:focus {
+    box-shadow: 0 0 0 3px rgba(var(--brand-orange-rgb), 0.35) !important;
+}
+
+/* ---------- custom-style.css cards (were teal / navy) ---------- */
+.view_card .card-header,
+.dashboard_card .card-header {
+    background: var(--brand-gradient);
+    color: #fff;
+}
+
+.view_card th {
+    background-color: var(--brand-soft-strong) !important;
+    color: var(--brand-ink);
+}
+
+/* =====================================================================
+   Per-user appearance (Settings > Appearance). The layout sets these on
+   <html>: data-app-theme, data-resolved-theme, data-density,
+   data-reduced-motion, and inline --brand-* / font-size for accent and
+   font size.
+   ===================================================================== */
+
+/* Dark mode: keep the user's accent instead of the theme's default blue,
+   and swap the cream highlight colours for dark equivalents. */
+html[data-resolved-theme="dark"] body[data-layout-color="dark"] {
+    --ct-link-color: var(--brand-orange);
+    --ct-link-hover-color: var(--brand-yellow);
+    --ct-component-active-bg: var(--brand-orange);
+    --ct-primary: var(--brand-orange);
+    --bs-link-color: var(--brand-orange);
+    --bs-link-hover-color: var(--brand-yellow);
+    --ct-body-bg: #1b1d21;
+}
+
+html[data-resolved-theme="dark"] {
+    --brand-soft: rgba(var(--brand-orange-rgb), 0.14);
+    --brand-soft-strong: rgba(var(--brand-orange-rgb), 0.22);
+    --brand-ink: #e5e7eb;
+    --brand-text: var(--brand-orange);
+    --dt-header-text-color: #e5e7eb !important;
+}
+
+html[data-resolved-theme="dark"] .settings-signature {
+    background: #f9fafb;
+}
+
+/* Compact density: tighter cards, forms and tables. */
+html[data-density="compact"] .card-body {
+    padding: 0.85rem 1rem;
+}
+
+html[data-density="compact"] .card-header {
+    padding: 0.6rem 1rem;
+}
+
+html[data-density="compact"] .form-control,
+html[data-density="compact"] .form-select {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+html[data-density="compact"] .select2-container .select2-selection--single {
+    height: 32px;
+}
+
+html[data-density="compact"] .select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 30px;
+}
+
+html[data-density="compact"] .table > :not(caption) > * > *,
+html[data-density="compact"] table.dataTable > tbody > tr > td,
+html[data-density="compact"] table.dataTable > thead > tr > th {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
+
+html[data-density="compact"] .mb-3 {
+    margin-bottom: 0.65rem !important;
+}
+
+/* Reduce motion: no animations or transitions anywhere. */
+html[data-reduced-motion] *,
+html[data-reduced-motion] *::before,
+html[data-reduced-motion] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* ---------- Dark mode: tables / DataTables ----------
+   custom-style.css stripes even rows #f9f9f9 for every theme, which turns
+   every second row white with light text in dark mode. Restate the rows,
+   header and controls with dark colours. */
+body[data-layout-color="dark"] {
+    --dark-table-row: #2b313b;
+    --dark-table-row-alt: #323945;
+    --dark-table-hover: #3a4250;
+    --dark-table-border: #3e4655;
+    --dark-table-text: #d1d5db;
+    --dark-table-muted: #9ca3af;
+    --dt-header-background-color: #3a3128 !important;
+    --dt-header-text-color: #fde7b8 !important;
+}
+
+body[data-layout-color="dark"] .table,
+body[data-layout-color="dark"] table.dataTable {
+    --ct-table-color: var(--dark-table-text);
+    --ct-table-bg: transparent;
+    --ct-table-striped-bg: transparent;
+    --ct-table-striped-color: var(--dark-table-text);
+    --ct-table-accent-bg: transparent;
+    color: var(--dark-table-text);
+    border-color: var(--dark-table-border);
+}
+
+body[data-layout-color="dark"] .table tbody tr,
+body[data-layout-color="dark"] .table tbody tr:nth-child(odd) > *,
+body[data-layout-color="dark"] table.dataTable > tbody > tr > * {
+    background-color: var(--dark-table-row);
+    color: var(--dark-table-text);
+    box-shadow: none;
+}
+
+body[data-layout-color="dark"] .table tbody tr:nth-child(even),
+body[data-layout-color="dark"] .table tbody tr:nth-child(even) > *,
+body[data-layout-color="dark"] table.dataTable > tbody > tr:nth-child(even) > * {
+    background-color: var(--dark-table-row-alt);
+}
+
+body[data-layout-color="dark"] .table tbody tr:hover > *,
+body[data-layout-color="dark"] table.dataTable > tbody > tr:hover > * {
+    background-color: var(--dark-table-hover);
+}
+
+body[data-layout-color="dark"] .table > :not(caption) > * > *,
+body[data-layout-color="dark"] .table-bordered > :not(caption) > *,
+body[data-layout-color="dark"] table.dataTable > tbody > tr > *,
+body[data-layout-color="dark"] table.dataTable > thead > tr > * {
+    border-color: var(--dark-table-border) !important;
+}
+
+body[data-layout-color="dark"] .dataTable > thead > tr > th {
+    border-bottom: 2px solid var(--brand-orange) !important;
+}
+
+/* No-data / processing rows */
+body[data-layout-color="dark"] table.dataTable td.dt-empty,
+body[data-layout-color="dark"] table.dataTable td.dataTables_empty {
+    color: var(--dark-table-muted);
+}
+
+/* Export / Show N records buttons */
+body[data-layout-color="dark"] .dt-buttons .btn,
+body[data-layout-color="dark"] .dt-buttons .dt-button,
+body[data-layout-color="dark"] .dt-buttons .btn-secondary {
+    background: var(--dark-table-row-alt);
+    border-color: var(--dark-table-border);
+    color: var(--dark-table-text);
+}
+
+body[data-layout-color="dark"] .dt-buttons .btn:hover,
+body[data-layout-color="dark"] .dt-buttons .dt-button:hover {
+    background: var(--dark-table-hover);
+    color: #fff;
+}
+
+body[data-layout-color="dark"] .dt-button-collection .dropdown-menu,
+body[data-layout-color="dark"] div.dt-button-collection {
+    background: var(--dark-table-row-alt);
+    border-color: var(--dark-table-border);
+}
+
+body[data-layout-color="dark"] div.dt-button-collection .dt-button,
+body[data-layout-color="dark"] .dt-button-collection .dropdown-item {
+    color: var(--dark-table-text);
+}
+
+body[data-layout-color="dark"] div.dt-button-collection .dt-button:hover,
+body[data-layout-color="dark"] .dt-button-collection .dropdown-item:hover {
+    background: var(--dark-table-hover);
+}
+
+/* Search box, info text and paging */
+body[data-layout-color="dark"] .dt-search input,
+body[data-layout-color="dark"] .dataTables_filter input {
+    background: var(--dark-table-row);
+    border-color: var(--dark-table-border);
+    color: var(--dark-table-text);
+}
+
+body[data-layout-color="dark"] .dt-info,
+body[data-layout-color="dark"] .dataTables_info,
+body[data-layout-color="dark"] .dt-search label,
+body[data-layout-color="dark"] .dataTables_filter label {
+    color: var(--dark-table-muted);
+}
+
+body[data-layout-color="dark"] .dt-paging .page-link,
+body[data-layout-color="dark"] .dataTables_paginate .page-link {
+    background: var(--dark-table-row);
+    border-color: var(--dark-table-border);
+    color: var(--dark-table-text);
+}
+
+body[data-layout-color="dark"] .dt-paging .page-item.active .page-link,
+body[data-layout-color="dark"] .dataTables_paginate .page-item.active .page-link {
+    background: var(--brand-orange);
+    border-color: var(--brand-orange);
+    color: #1b1d21;
+}

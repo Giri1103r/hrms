@@ -47,6 +47,10 @@ class User extends Authenticatable
         'otp_token',
         'profile_image',
         'permission',
+        'theme',
+        'language',
+        'timezone',
+        'preferences',
         'created_by',
         'updated_by',
         'status',
@@ -75,6 +79,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'preferences' => 'array',
         ];
     }
 
@@ -188,6 +193,34 @@ class User extends Authenticatable
 
 
 
+    /**
+     * Login account for an employee created from the Add form or an import.
+     * Same defaults as the employee sync: username is the employee id and the
+     * first password is "User@<employee id>".
+     */
+    public function storeForEmployee($employee, $createdBy)
+    {
+        return $this->insertGetId([
+            'name' => $employee->emp_name,
+            'first_name' => $employee->emp_name,
+            'last_name' => '',
+            'email' => $employee->email,
+            'role' => $employee->user_role,
+            'user_type' => 1,
+            'employee_id' => $employee->emp_id,
+            'username' => $employee->emp_id,
+            'password' => Hash::make('User@' . trim($employee->emp_id)),
+            'company_id' => $employee->company,
+            'location_id' => $employee->location,
+            'department_id' => $employee->department,
+            'designation_id' => $employee->designation,
+            'mobile' => $employee->mobile_no,
+            'status' => 1,
+            'created_by' => $createdBy,
+            'created_at' => now(),
+        ]);
+    }
+
     public function updateErrorStatus($emp_id, $errorMessage)
     {
         $update_data = [
@@ -198,40 +231,23 @@ class User extends Authenticatable
         return DB::table('masters_employee')->where('emp_id', $emp_id)->update($update_data);
     }
 
+    /** Keeps the employee's login in step with the employee record after an edit. */
     public function userUpdate($employee)
     {
-
-        $request = request();
-
-
-        $decryptedRoleIds = [];
-
-
-        if ($request->has('user_role')) {
-            $decryptedRoleIds = array_map(function ($encryptedId) {
-                return $encryptedId;
-            }, $request->user_role);
-
-            $commaSeparatedRoles = implode(',', $decryptedRoleIds);
-        }
-
-
         $data = array(
             'name' => $employee->emp_name,
             'first_name' => $employee->emp_name,
             'last_name' => '',
             'email' => $employee->email,
-            'role' => $commaSeparatedRoles,
+            'role' => $employee->user_role,
             'employee_id' => $employee->emp_id,
             'company_id' => $employee->company,
-            'unit_id' => $employee->unit,
             'location_id' => $employee->location,
             'department_id' => $employee->department,
             'designation_id' => $employee->designation,
             'mobile' => $employee->mobile_no,
             'updated_by' => Auth::id()
         );
-
 
         return $this->where('employee_id', $employee->emp_id)->update($data);
     }
