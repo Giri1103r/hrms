@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\Master\BloodGroupController;
 use App\Http\Controllers\Admin\Employee\Master\DocumentController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeTypeController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeStatusController;
+use App\Http\Controllers\Admin\Holiday\HolidayController;
 
 
 
@@ -674,6 +675,24 @@ Route::middleware(['securityheader'])->group(function () {
                         Route::get('passwordchange/{id}', 'PasswordUpdate');
                         Route::post('passwordchange/submit', 'PasswordUpdateSubmit');
                          });
+            });
+
+            /**
+             *  holiday management
+             */
+            Route::group(['prefix' => 'holiday-management/'], function () {
+
+                Route::controller(HolidayController::class)
+                    ->prefix('holiday')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('import', 'import');
+                        Route::post('import/submit', 'importSubmit');
+                        Route::get('sampledownload', 'DownloadSample');
+                    });
             });
 
                 Route::group(['prefix' => 'administration/'], function () {

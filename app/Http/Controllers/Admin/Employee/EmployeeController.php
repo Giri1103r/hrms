@@ -24,6 +24,7 @@ use Illuminate\Validation\Rule;
 use App\Rules\IdNumber;
 
 use App\Mail\RestEmployeePasswordEmail;
+use App\Rules\ExcelFile;
 use App\Models\Master\Bloodgroup;
 use App\Models\Master\Company;
 use App\Models\Employee\Employee;
@@ -479,9 +480,7 @@ class EmployeeController extends Controller
                 ? $employee->documents()->with('documentType')->orderBy('document_type_id')->get()
                 : collect(),
             'companyList' => $this->company->getcompany(),
-            'shiftList' => (new Shift())->where('status', 1)
-                ->when($employee?->shift, fn ($q) => $q->orWhere('id', $employee->shift))
-                ->orderBy('shift_name')->get(),
+            'shiftList' => $this->shift->getShift(),
             'bloodgroup' => $this->bloodgroup->getBloodgroup(),
             'designationList' => (new Designation())->getDesignation(),
             'employeeTypeList' => (new EmployeeType())->getEmployeeType(),
@@ -505,7 +504,7 @@ class EmployeeController extends Controller
         ]);
     }
 
-    /** Validation shared by Add and Edit; on Edit the unique checks skip this employee. */
+    
     private function formRules(Request $request, ?Employee $employee = null): array
     {
         $uniqueEmployee = fn ($column) => Rule::unique('masters_employee', $column)->ignore($employee?->id);
@@ -586,7 +585,7 @@ class EmployeeController extends Controller
         ];
     }
 
-    /** The employee columns the Add / Edit form writes (everything but emp_id). */
+    
     private function formRecord(Request $request): array
     {
         return [
@@ -611,11 +610,7 @@ class EmployeeController extends Controller
         ];
     }
 
-    /**
-     * Saves each document row's files under uploads/employee/documents/{employee id}
-     * and records them in masters_employee_document. Returns the stored paths so the
-     * caller can remove them if the transaction is rolled back.
-     */
+   
     private function storeDocuments(Employee $employee, array $uploads, array $rows): array
     {
         $saved = [];
@@ -665,10 +660,9 @@ class EmployeeController extends Controller
     public function importSubmit(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'employee_upload' => 'required|file|mimes:xlsx|max:5120',
+            'employee_upload' => ['required', 'file', 'max:5120', new ExcelFile()],
         ], [
             'employee_upload.required' => 'Please upload a file',
-            'employee_upload.mimes' => 'Please upload an Excel file (.xlsx)',
             'employee_upload.max' => 'The file must not be larger than 5 MB',
         ]);
         if ($validator->fails()) {

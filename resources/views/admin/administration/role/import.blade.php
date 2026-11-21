@@ -88,16 +88,19 @@
             $('#locationtypeimport').validate({
                 rules: {
 
-                    location_type_name: {
+                    location_type_upload: {
                         required: true,
                         extension: "xlsx",
+                        // accept=".xlsx" on the input only filters the file picker; stop
+                        // jQuery Validate treating it as a MIME-type rule (it never matches).
+                        accept: false,
                         filesize: 5242880,
                     },
                 },
                 messages: {
-                    location_type_name: {
+                    location_type_upload: {
                         required: "{{__('administration.please_upload_a_file') }}",
-                        extension: "{{__('administration.please_upload_an_excel_file_xlsx) }}",
+                        extension: "{{__('administration.please_upload_an_excel_file_xlsx') }}",
                     },
 
                 },

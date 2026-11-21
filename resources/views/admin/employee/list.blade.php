@@ -13,9 +13,9 @@
                     <div class="d-flex flex-wrap justify-content-end gap-2 p-2">
 
                         <x-button-filter dataId="" class="search me-1" href=""></x-button-filter>
-                        @if (CheckUserPermission('export'))
+                        <!-- @if (CheckUserPermission('export'))
                             <x-button-import href="{{ admin_url('employee-management/employee/import') }}"></x-button-import>
-                        @endif
+                        @endif -->
                         @if (CheckUserPermission('add'))
                             <x-button-add dataId="" class="add btn btn-primary ms-1"
                                 href="{{ admin_url('employee-management/employee/add') }}">{{ __('common.add') }}</x-button-add>

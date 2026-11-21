@@ -11,7 +11,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
  */
 class IdNumber implements ValidationRule
 {
-    /** ID type => [pattern for the normalized value, human readable format]. */
+   
     public const TYPES = [
         'Aadhar' => ['/^[2-9][0-9]{11}$/', '12 digits, not starting with 0 or 1 (e.g. 2345 6789 0124)'],
         'PAN' => ['/^[A-Z]{3}[ABCFGHJLPT][A-Z][0-9]{4}[A-Z]$/', '5 letters, 4 digits, 1 letter (e.g. ABCPE1234F)'],

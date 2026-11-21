@@ -77,6 +77,9 @@
                     employee_upload: {
                         required: true,
                         extension: "xlsx",
+                        // accept=".xlsx" on the input only filters the file picker; stop
+                        // jQuery Validate treating it as a MIME-type rule (it never matches).
+                        accept: false,
                         filesize: 5242880,
                     },
                 },
