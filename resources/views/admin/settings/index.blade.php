@@ -1,5 +1,6 @@
 @extends('admin.layouts.admin')
 @section('title', 'Settings')
+@section('pageurl', admin_url('administration/settings/list'))
 
 @push('style')
     <style>
@@ -198,13 +199,13 @@
                                         <p class="section-hint">JPG, PNG or WEBP, up to 2 MB.</p>
                                         <div class="d-flex align-items-center gap-3 flex-wrap">
                                             <img src="{{ url(profileImage($user->id)) }}" alt="Profile photo" class="settings-avatar" id="avatarPreview">
-                                            <form method="POST" action="{{ admin_url('settings/avatar') }}" enctype="multipart/form-data" class="d-flex gap-2 flex-wrap align-items-center">
+                                            <form method="POST" action="{{ admin_url('administration/settings/avatar') }}" enctype="multipart/form-data" class="d-flex gap-2 flex-wrap align-items-center">
                                                 @csrf
                                                 <input type="file" name="avatar" id="avatarInput" class="form-control form-control-sm" style="max-width: 240px;" accept=".jpg,.jpeg,.png,.webp">
                                                 <button type="submit" class="btn btn-sm btn-primary">Upload</button>
                                             </form>
                                             @if ($user->profile_image)
-                                                <form method="POST" action="{{ admin_url('settings/avatar') }}">
+                                                <form method="POST" action="{{ admin_url('administration/settings/avatar') }}">
                                                     @csrf
                                                     <input type="hidden" name="remove" value="1">
                                                     <button type="submit" class="btn btn-sm btn-outline-secondary">Remove</button>
@@ -223,7 +224,7 @@
                                                 Your name and contact details.
                                             @endif
                                         </p>
-                                        <form method="POST" action="{{ admin_url('settings/profile') }}" id="profileForm">
+                                        <form method="POST" action="{{ admin_url('administration/settings/profile') }}" id="profileForm">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-md-6 mb-3 form-input">
@@ -293,7 +294,7 @@
                                             @else
                                                 <span class="text-muted small">No signature uploaded.</span>
                                             @endif
-                                            <form method="POST" action="{{ admin_url('settings/signature') }}" enctype="multipart/form-data" class="d-flex gap-2 flex-wrap align-items-center">
+                                            <form method="POST" action="{{ admin_url('administration/settings/signature') }}" enctype="multipart/form-data" class="d-flex gap-2 flex-wrap align-items-center">
                                                 @csrf
                                                 <input type="file" name="signature" class="form-control form-control-sm" style="max-width: 240px;" accept=".jpg,.jpeg,.png">
                                                 <button type="submit" class="btn btn-sm btn-primary">Upload</button>
@@ -305,7 +306,7 @@
 
                                 {{-- ================= Appearance ================= --}}
                                 <div class="tab-pane fade {{ $section === 'appearance' ? 'show active' : '' }}" id="pane-appearance" role="tabpanel">
-                                    <form method="POST" action="{{ admin_url('settings/appearance') }}" id="appearanceForm">
+                                    <form method="POST" action="{{ admin_url('administration/settings/appearance') }}" id="appearanceForm">
                                         @csrf
                                         <div class="settings-section">
                                             <h5>Theme</h5>
@@ -398,7 +399,7 @@
                                                 Last changed {{ \Carbon\Carbon::parse($user->password_changed_at)->diffForHumans() }}.
                                             @endif
                                         </p>
-                                        <form method="POST" action="{{ admin_url('settings/password') }}" id="passwordForm" autocomplete="off">
+                                        <form method="POST" action="{{ admin_url('administration/settings/password') }}" id="passwordForm" autocomplete="off">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-md-4 mb-3 form-input">
@@ -431,7 +432,7 @@
                                                 <p class="section-hint">Browsers and devices signed in to your account.</p>
                                             </div>
                                             @if ($sessions->where('current', false)->isNotEmpty())
-                                                <form method="POST" action="{{ admin_url('settings/sessions/others/logout') }}" class="confirm-submit"
+                                                <form method="POST" action="{{ admin_url('administration/settings/sessions/others/logout') }}" class="confirm-submit"
                                                     data-confirm="Sign out of every other browser and device?">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -459,7 +460,7 @@
                                                     </small>
                                                 </div>
                                                 @unless ($session['current'])
-                                                    <form method="POST" action="{{ admin_url('settings/sessions/logout') }}">
+                                                    <form method="POST" action="{{ admin_url('administration/settings/sessions/logout') }}">
                                                         @csrf
                                                         <input type="hidden" name="session" value="{{ $session['key'] }}">
                                                         <button type="submit" class="btn btn-sm btn-light" title="Sign out this session">Sign out</button>
@@ -480,7 +481,7 @@
                                             A JSON file with your account details{{ $isEmployee ? ', employee record, document list' : '' }}
                                             and signed-in sessions. Passwords and security codes are never included.
                                         </p>
-                                        <a href="{{ admin_url('settings/data/download') }}" class="btn btn-primary">
+                                        <a href="{{ admin_url('administration/settings/data/download') }}" class="btn btn-primary">
                                             <i class="fa-solid fa-download me-1"></i> Download my data
                                         </a>
                                     </div>
@@ -488,7 +489,7 @@
 
                                 {{-- ================= App Preferences ================= --}}
                                 <div class="tab-pane fade {{ $section === 'preferences' ? 'show active' : '' }}" id="pane-preferences" role="tabpanel">
-                                    <form method="POST" action="{{ admin_url('settings/preferences') }}">
+                                    <form method="POST" action="{{ admin_url('administration/settings/preferences') }}">
                                         @csrf
                                         <div class="settings-section">
                                             <h5>Default page size</h5>

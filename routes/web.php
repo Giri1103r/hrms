@@ -118,18 +118,18 @@ Route::middleware(['securityheader'])->group(function () {
             Route::get('dashboard', [AdminController::class, 'index'])->middleware('role:dashboard,view');
             Route::get('home', [AdminController::class, 'index'])->name('home');
             // The old profile page is replaced by Settings > Profile.
-            Route::get('profile', fn () => redirect(admin_url('settings')));
+            Route::get('profile', fn () => redirect(admin_url('administration/settings/list')));
             Route::post('profile/image/update', [AdminController::class, 'profileUpdate']);
             Route::post('profile/signature-upload/update', [AdminController::class, 'signatureUpload']);
 
             Route::post('profile/update', [AdminController::class, 'Update']);
             Route::post('profile/password/update', [AdminController::class, 'changeProfilePassword']);
 
-            /* The signed-in user's own Settings page */
+            /* The signed-in user's own Settings page (Administration > Settings) */
             Route::controller(\App\Http\Controllers\Admin\SettingsPageController::class)
-                ->prefix('settings')
+                ->prefix('administration/settings')
                 ->group(function () {
-                    Route::get('/', 'index');
+                    Route::get('list', 'index');
                     Route::post('profile', 'updateProfile');
                     Route::post('avatar', 'updateAvatar');
                     Route::post('signature', 'updateSignature');
@@ -140,6 +140,10 @@ Route::middleware(['securityheader'])->group(function () {
                     Route::get('data/download', 'downloadData');
                     Route::post('preferences', 'updatePreferences');
                 });
+
+            // Old Settings address, kept so bookmarks keep working.
+            Route::get('settings', fn () => redirect(admin_url('administration/settings/list')
+                . (request()->getQueryString() ? '?' . request()->getQueryString() : '')));
 
 
             Route::group(['prefix' => 'dashboard/'], function () {

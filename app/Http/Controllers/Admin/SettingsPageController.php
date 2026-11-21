@@ -386,6 +386,6 @@ class SettingsPageController extends Controller
 
     private function back(string $section)
     {
-        return redirect(admin_url('settings') . '?section=' . $section);
+        return redirect(admin_url('administration/settings/list') . '?section=' . $section);
     }
 }
