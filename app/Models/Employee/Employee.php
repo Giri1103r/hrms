@@ -208,7 +208,7 @@ class Employee extends Model
                 $data['updated_at'] = now();
             } else {
                 $data['mobile_no'] = $item->mobile_no ?? null;
-                $data['user_role'] = 9;
+                $data['user_role'] = ROLE_USER;
                 $data['created_at'] = now();
             }
             $insertArray[] = $data;

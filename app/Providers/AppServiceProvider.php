@@ -61,34 +61,40 @@ class AppServiceProvider extends ServiceProvider
 
         defined('MENU') or define('MENU', 'template_left_menu');
 
-        defined('ROLE_SUPERADMIN') or define('ROLE_SUPERADMIN', 1);
-        defined('ROLE_ADMIN') or define('ROLE_ADMIN', 2);
-        defined('ROLE_EHS_OFFICER') or define('ROLE_EHS_OFFICER', 3);
-        defined('ROLE_HOD') or define('ROLE_HOD', 4);
-        defined('ROLE_EHS_HEAD') or define('ROLE_EHS_HEAD', 6);
-        defined('ROLE_PLANT_HEAD') or define('ROLE_PLANT_HEAD', 7);
-        defined('ROLE_STORE_MANAGER') or define('ROLE_STORE_MANAGER', 5);
-        defined('ROLE_TRAINER') or define('ROLE_TRAINER', 8);
-        defined('ROLE_USER') or define('ROLE_USER', 9);
-        defined('ROLE_VISE_PRESIDENT') or define('ROLE_VISE_PRESIDENT', 10);
-        defined('ROLE_INFRA_LEAD') or define('ROLE_INFRA_LEAD', 11);
-        defined('ROLE_WORKER_REQUEST') or define('ROLE_WORKER_REQUEST', 12);
-        defined('ROLE_PARAMEDICS') or define('ROLE_PARAMEDICS', 13);
-        defined('ROLE_L1_EHS_OFFCIER') or define('ROLE_L1_EHS_OFFCIER', 14);
-        defined('ROLE_CERTIFIED_FIRST_AIDER') or define('ROLE_CERTIFIED_FIRST_AIDER', 15);
-        defined('ROLE_DOCTOR') or define('ROLE_DOCTOR', 16);
-        defined('ROLE_NURSE') or define('ROLE_NURSE', 17);
-        defined('ROLE_FIRE_ASSOCIATES') or define('ROLE_FIRE_ASSOCIATES', 18);
-        defined('ROLE_L1_MANAGER') or define('ROLE_L1_MANAGER', 19);
-        defined('ROLE_L2_MANAGER') or define('ROLE_L2_MANAGER', 20);
-        defined('ROLE_FLOOR_MANAGER') or define('ROLE_FLOOR_MANAGER', 21);
-        defined('ROLE_UNIT_HEAD') or define('ROLE_UNIT_HEAD', 22);
-        defined('ROLE_SAFETY_OFFICER') or define('ROLE_SAFETY_OFFICER', 23);
-        defined('ROLE_MEDICAL_ASSISTANT') or define('ROLE_MEDICAL_ASSISTANT', 24);
-        defined('ROLE_NURSING_OFFICER') or define('ROLE_NURSING_OFFICER', 25);
-        defined('ROLE_CLEANER') or define('ROLE_CLEANER', 26);
-        defined('ROLE_INSPECTION_CREATOR') or define('ROLE_INSPECTION_CREATOR', 27);
-        defined('ROLE_DASHBOARD_VIEWER') or define('ROLE_DASHBOARD_VIEWER', 28);
+        // Role master holds only Admin / User / Manager (see RoleMasterSeeder).
+        // Admin (id 1) took over the old Superadmin role, so ROLE_SUPERADMIN
+        // points at it to keep full-menu access working.
+        defined('ROLE_ADMIN') or define('ROLE_ADMIN', 1);
+        defined('ROLE_SUPERADMIN') or define('ROLE_SUPERADMIN', ROLE_ADMIN);
+        defined('ROLE_USER') or define('ROLE_USER', 2);
+        defined('ROLE_MANAGER') or define('ROLE_MANAGER', 3);
+
+        // Retired roles: 0 matches no row, so legacy checks never fire.
+        defined('ROLE_EHS_OFFICER') or define('ROLE_EHS_OFFICER', 0);
+        defined('ROLE_HOD') or define('ROLE_HOD', 0);
+        defined('ROLE_EHS_HEAD') or define('ROLE_EHS_HEAD', 0);
+        defined('ROLE_PLANT_HEAD') or define('ROLE_PLANT_HEAD', 0);
+        defined('ROLE_STORE_MANAGER') or define('ROLE_STORE_MANAGER', 0);
+        defined('ROLE_TRAINER') or define('ROLE_TRAINER', 0);
+        defined('ROLE_VISE_PRESIDENT') or define('ROLE_VISE_PRESIDENT', 0);
+        defined('ROLE_INFRA_LEAD') or define('ROLE_INFRA_LEAD', 0);
+        defined('ROLE_WORKER_REQUEST') or define('ROLE_WORKER_REQUEST', 0);
+        defined('ROLE_PARAMEDICS') or define('ROLE_PARAMEDICS', 0);
+        defined('ROLE_L1_EHS_OFFCIER') or define('ROLE_L1_EHS_OFFCIER', 0);
+        defined('ROLE_CERTIFIED_FIRST_AIDER') or define('ROLE_CERTIFIED_FIRST_AIDER', 0);
+        defined('ROLE_DOCTOR') or define('ROLE_DOCTOR', 0);
+        defined('ROLE_NURSE') or define('ROLE_NURSE', 0);
+        defined('ROLE_FIRE_ASSOCIATES') or define('ROLE_FIRE_ASSOCIATES', 0);
+        defined('ROLE_L1_MANAGER') or define('ROLE_L1_MANAGER', 0);
+        defined('ROLE_L2_MANAGER') or define('ROLE_L2_MANAGER', 0);
+        defined('ROLE_FLOOR_MANAGER') or define('ROLE_FLOOR_MANAGER', 0);
+        defined('ROLE_UNIT_HEAD') or define('ROLE_UNIT_HEAD', 0);
+        defined('ROLE_SAFETY_OFFICER') or define('ROLE_SAFETY_OFFICER', 0);
+        defined('ROLE_MEDICAL_ASSISTANT') or define('ROLE_MEDICAL_ASSISTANT', 0);
+        defined('ROLE_NURSING_OFFICER') or define('ROLE_NURSING_OFFICER', 0);
+        defined('ROLE_CLEANER') or define('ROLE_CLEANER', 0);
+        defined('ROLE_INSPECTION_CREATOR') or define('ROLE_INSPECTION_CREATOR', 0);
+        defined('ROLE_DASHBOARD_VIEWER') or define('ROLE_DASHBOARD_VIEWER', 0);
 
       
 
