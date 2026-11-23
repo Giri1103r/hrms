@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\Employee\Master\EmployeeTypeController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeStatusController;
 use App\Http\Controllers\Admin\Holiday\HolidayController;
 use App\Http\Controllers\Admin\Shift\ShiftChangeRequestController;
+use App\Http\Controllers\Admin\Leave\Master\LeaveTypeController;
+use App\Http\Controllers\Admin\Leave\Master\LeaveStatusController;
 
 
 
@@ -699,6 +701,64 @@ Route::middleware(['securityheader'])->group(function () {
                         Route::get('sampledownload', 'DownloadSample');
                     });
             });
+
+            /**
+             *  leave management
+             */
+            Route::group(['prefix' => 'leave-management/'], function () {
+
+                Route::group(['prefix' => 'master/'], function () {
+
+                    Route::controller(LeaveTypeController::class)
+                        ->prefix('leave-type')
+                        ->group(function () {
+
+                            Route::get('list', 'index');
+                            Route::post('list', 'index');
+
+                            Route::get('add', 'add');
+                            Route::post('add/submit', 'store');
+
+                            Route::get('edit/{id}', 'edit');
+                            Route::post('edit/submit', 'update');
+
+                            Route::get('view/{id}', 'view');
+
+                            Route::post('delete', 'delete');
+
+                            Route::get('export/excel', 'exportExcel');
+                            Route::get('export/pdf', 'exportPdf');
+
+                            Route::post('status', 'statusChange');
+                            Route::post('unique', 'Uniquecheck');
+                        });
+
+                    Route::controller(LeaveStatusController::class)
+                        ->prefix('leave-status')
+                        ->group(function () {
+
+                            Route::get('list', 'index');
+                            Route::post('list', 'index');
+
+                            Route::get('add', 'add');
+                            Route::post('add/submit', 'store');
+
+                            Route::get('edit/{id}', 'edit');
+                            Route::post('edit/submit', 'update');
+
+                            Route::get('view/{id}', 'view');
+
+                            Route::post('delete', 'delete');
+
+                            Route::get('export/excel', 'exportExcel');
+                            Route::get('export/pdf', 'exportPdf');
+
+                            Route::post('status', 'statusChange');
+                            Route::post('unique', 'Uniquecheck');
+                        });
+                });
+            });
+
             /**
              *  shift management
              */

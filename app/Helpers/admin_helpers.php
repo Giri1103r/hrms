@@ -21,6 +21,8 @@ use App\Models\Master\Bloodgroup;
 use App\Models\Employee\Master\Document;
 use App\Models\Employee\Master\EmployeeType;
 use App\Models\Employee\Master\EmployeeStatus;
+use App\Models\Leave\Master\LeaveType;
+use App\Models\Leave\Master\LeaveStatus;
 use App\Models\Master\PpeRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\Master\PpeExemption;
@@ -248,6 +250,16 @@ if (!function_exists('getsequence')) {
                 $count = UserRole::withoutGlobalScopes()->count();
                 $count = $count + 1;
                 $sequence = 'ROLE-' . getautogen($count);
+                break;
+            case 'leavetype':
+                $count = LeaveType::withoutGlobalScopes()->count();
+                $count = $count + 1;
+                $sequence = 'LTY-' . getautogen($count);
+                break;
+            case 'leavestatus':
+                $count = LeaveStatus::withoutGlobalScopes()->count();
+                $count = $count + 1;
+                $sequence = 'LST-' . getautogen($count);
                 break;
 
             default:
