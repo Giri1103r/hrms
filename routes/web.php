@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\Employee\Master\DocumentController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeTypeController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeStatusController;
 use App\Http\Controllers\Admin\Holiday\HolidayController;
+use App\Http\Controllers\Admin\Shift\ShiftChangeRequestController;
 
 
 
@@ -696,6 +697,32 @@ Route::middleware(['securityheader'])->group(function () {
                         Route::get('import', 'import');
                         Route::post('import/submit', 'importSubmit');
                         Route::get('sampledownload', 'DownloadSample');
+                    });
+            });
+            /**
+             *  shift management
+             */
+            Route::group(['prefix' => 'shift-management/'], function () {
+
+                Route::controller(ShiftChangeRequestController::class)
+                    ->prefix('shift-change-request')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('edit/{id}', 'edit');
+                        Route::post('edit/submit', 'update');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::get('approval/{id}', 'approval');
+                        Route::post('approval/submit', 'approvalSubmit');
+
+                        Route::post('employee-details', 'employeeDetails');
                     });
             });
 

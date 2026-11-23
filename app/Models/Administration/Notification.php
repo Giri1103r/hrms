@@ -52,6 +52,10 @@ class Notification extends Model
          */
         if (CheckUserRole(ROLE_SUPERADMIN)|| CheckUserRole(ROLE_ADMIN)) {
             $query->where('template_notification.trash', 'NO');
+        } elseif (CheckUserRole(ROLE_MANAGER)) {
+            // Managers see what was assigned to them (e.g. shift change approvals).
+            $query->whereRaw("FIND_IN_SET(?, assigned_user)", [Auth::id()])
+                ->where('template_notification.trash', 'NO');
         } elseif (CheckUserRole(ROLE_TRAINER)) {
             $trainer = DB::table('users')
                 ->select('id')
@@ -100,6 +104,11 @@ class Notification extends Model
                             ->orWhere(function ($query) use ($assignedUserIdUsers) {
                                 $query->whereRaw("FIND_IN_SET(?, assigned_user)", [$assignedUserIdUsers])
                                     ->where('notification_type', 3)
+                                    ->where('template_notification.trash', 'NO');
+                            })
+                            ->orWhere(function ($query) use ($assignedUserIdUsers) {
+                                $query->whereRaw("FIND_IN_SET(?, assigned_user)", [$assignedUserIdUsers])
+                                    ->where('notification_type', \App\Models\Shift\ShiftChangeRequest::NOTIFICATION_TYPE)
                                     ->where('template_notification.trash', 'NO');
                             });
                     }
