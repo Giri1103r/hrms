@@ -103,6 +103,7 @@
                                         </div>
                                         <div class="col-md-4 mb-3 d-flex align-items-end gap-2">
                                             <x-button-approve></x-button-approve>
+                                            <x-button-reject></x-button-reject>
                                         </div>
                                     </div>
                                     <p class="text-muted small mb-0">

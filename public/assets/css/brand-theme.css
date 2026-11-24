@@ -656,3 +656,62 @@ body[data-layout-color="dark"] .dataTables_paginate .page-item.active .page-link
     border-color: var(--brand-orange);
     color: #1b1d21;
 }
+
+/*
+ * Condensed (icon-only) sidebar: the vendor theme only reveals a parent's
+ * flyout submenu on `:hover`, which never fires on a touch screen, so on
+ * mobile the icons show but tapping them does nothing. Tapping a parent icon
+ * already toggles Bootstrap's collapse (.show) via data-bs-toggle="collapse"
+ * — these rules just make the flyout visible/positioned for that same .show
+ * state too, alongside the existing :hover behaviour desktop already has.
+ */
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>a,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:has(>.collapse.show)>a,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li.menu-flyout-open>a {
+    position: relative;
+    width: calc(190px + 70px);
+    color: var(--ct-menu-item-active);
+    background-color: #f8f9fa;
+}
+
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>a span,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:has(>.collapse.show)>a span,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li.menu-flyout-open>a span {
+    display: inline;
+}
+
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapse,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapsing,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li>.collapse.show {
+    display: block !important;
+    height: auto !important;
+    transition: none !important;
+}
+
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapse>ul,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapsing>ul,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul>li>.collapse.show>ul {
+    display: block !important;
+    left: 70px;
+    position: absolute;
+    width: 190px;
+    box-shadow: var(--ct-box-shadow-condensed);
+}
+
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li:hover>.collapse,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li:hover>.collapsing,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li>.collapse.show {
+    display: block !important;
+    height: auto !important;
+    transition: none !important;
+}
+
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li:hover>.collapse>ul,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li:hover>.collapsing>ul,
+body[data-leftbar-size=condensed] .left-side-menu #sidebar-menu>ul ul li>.collapse.show>ul {
+    display: block;
+    left: 190px;
+    margin-top: -36px;
+    position: absolute;
+    width: 190px;
+}

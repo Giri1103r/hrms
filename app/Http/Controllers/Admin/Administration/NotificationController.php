@@ -18,6 +18,11 @@ use DataTables;
 use App\Models\User;
 use App\Models\Administration\Notification;
 use App\Models\Administration\NotificationLog;
+use App\Models\Attendance\AttendanceRequest;
+use App\Models\Attendance\CompoffRequest;
+use App\Models\Attendance\PermissionRequest;
+use App\Models\Leave\LeaveRequest;
+use App\Models\Shift\ShiftChangeRequest;
 
 
 class NotificationController extends Controller
@@ -51,33 +56,7 @@ class NotificationController extends Controller
                             return $btn;
                         })
                         ->editColumn('notification_type', function ($row) {
-                            if ($row->notification_type == 1) {
-                                $btn = "PPE";
-                            } elseif ($row->notification_type == 2) {
-                                $btn = "TRAINING";
-                            } elseif ($row->notification_type == 3) {
-                                $btn = "PTW";
-                            } elseif ($row->notification_type == 4) {
-                                $btn = "OHC Management";
-                            } elseif ($row->notification_type == 5) {
-                                $btn = "Incident Management System";
-                            } elseif ($row->notification_type == GEMBA_WALK_NOTIIFCATION) {
-                                $btn = "Gemba Walk";
-                            } elseif ($row->notification_type == OHC_INSPECTION) {
-                                $btn = "Inspection OHC";
-                            } elseif ($row->notification_type == SAFETY_INSPECTION) {
-                                $btn = "Safety Inspection";
-                            } elseif ($row->notification_type == FIRE_INSPECTION) {
-                                $btn = "Fire Inspection";
-                            } elseif ($row->notification_type == MSDS_INSPECTION) {
-                                $btn = "MSDS Inspection";
-                            } elseif ($row->notification_type == RRAA_INSPECTION) {
-                                $btn = "RRAA Inspection";
-                            } else {
-                                $btn = "";
-                            }
-
-                            return $btn;
+                            return self::notificationTypeLabels()[$row->notification_type] ?? '';
                         })
                         ->editColumn('mobile_notification', function ($row) {
 
@@ -205,5 +184,17 @@ class NotificationController extends Controller
         $redirectUrl = $notification->web_link;
 
         return redirect($redirectUrl);
+    }
+
+    /** notification_type => display label, for every module that actually creates notifications. */
+    private static function notificationTypeLabels(): array
+    {
+        return [
+            ShiftChangeRequest::NOTIFICATION_TYPE => 'Shift Change Request',
+            LeaveRequest::NOTIFICATION_TYPE => 'Leave',
+            PermissionRequest::NOTIFICATION_TYPE => 'Permission',
+            CompoffRequest::NOTIFICATION_TYPE => 'Compensatory Off',
+            AttendanceRequest::NOTIFICATION_TYPE => 'Attendance',
+        ];
     }
 }

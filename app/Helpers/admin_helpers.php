@@ -69,6 +69,17 @@ use App\Models\OhcManagement\Master\CertifiedFirstAider;
  * Menu bar start
  */
 
+if (!function_exists('menu_label')) {
+
+    /** The current locale's translated label for a menu id, or the raw name when none exists. */
+    function menu_label($id, $fallbackName)
+    {
+        $key = 'leftmenu.menu_' . $id;
+
+        return \Illuminate\Support\Facades\Lang::has($key) ? __($key) : $fallbackName;
+    }
+}
+
 if (!function_exists('get_admin_menu')) {
 
     function get_admin_menu($menu)
@@ -80,7 +91,6 @@ if (!function_exists('get_admin_menu')) {
         foreach ($menu as $key => $value) {
 
             $id = $value->id;
-            $link_name  =  __('leftmenu.menu_' . $id);
 
             $menu_array[$value->parent_id][$i]['id'] = $value->id;
             $menu_array[$value->parent_id][$i]['name'] =  $value->name;
@@ -96,19 +106,18 @@ if (!function_exists('get_admin_menu')) {
 
 
         $html .= '<ul id="side-menu">';
-        $html .= '<li class="menu-title">Main Menu</li>';
+        $html .= '<li class="menu-title">' . __('common.main_menu') . '</li>';
 
         if (count($menu_array) > 0) {
             foreach ($menu_array[0] as $key => $value) {
 
                 $target = "_self";
                 $href = "#";
+                $link_name = menu_label($value['id'], $value['name']);
 
                 if ($value['is_parent'] != 0) {
 
                     $href = "javascript:void(0)";
-                    $link_name = $value['name'];
-
 
                     $link_icon = $value['icon'];
 
@@ -130,7 +139,6 @@ if (!function_exists('get_admin_menu')) {
                 } else {
 
                     $href = admin_url($value['link']);
-                    $link_name = $value['name'];
                     $link_icon = $value['icon'];
 
                     $html .= '<li><a href="' . $href . '"><i class="' . $link_icon . '"></i><span> ' . $link_name . ' </span></a></li>';
@@ -158,13 +166,15 @@ if (!function_exists('get_admin_menuchild')) {
             $target = "_self";
             $href = "#";
 
+            $link_name = menu_label($value['id'], $value['name']);
+
             if ($value['is_parent'] == '1' && isset($menu_array[$value['id']])) {
 
                 $string .= ' <li>';
 
                 $parenetlinkid = "link_" . encryptId($value['id']);
 
-                $string .= '<a href="#' . $parenetlinkid . '" data-bs-toggle="collapse">' . $value["name"] . '<span class="menu-arrow"></span></a>';
+                $string .= '<a href="#' . $parenetlinkid . '" data-bs-toggle="collapse">' . $link_name . '<span class="menu-arrow"></span></a>';
 
                 $parentdetails = array(
                     'id' => $value['id'],
@@ -174,7 +184,7 @@ if (!function_exists('get_admin_menuchild')) {
                 $string .= get_admin_menuchild($menu_array[$value['id']], $menu_array, $parentdetails);
                 $string .= '</li>';
             } else {
-                $string .= ' <li><a href="' . admin_url($value["link"]) . '">' . $value["name"] . '</a></li>';
+                $string .= ' <li><a href="' . admin_url($value["link"]) . '">' . $link_name . '</a></li>';
             }
         }
         $string .= '</ul>';

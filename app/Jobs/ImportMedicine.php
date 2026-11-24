@@ -136,7 +136,7 @@ class ImportMedicine
 
             $user = $this->details['user'];
             $role = string_to_array($user->role);
-            $allowed_roles = [ROLE_SUPERADMIN, ROLE_EHS_HEAD];
+            $allowed_roles = [ROLE_SUPERADMIN];
 
             if (!empty(array_intersect($role, $allowed_roles))) {
                 $approve_status = STATUS_OHC_EHS_HEAD_APPROVED;

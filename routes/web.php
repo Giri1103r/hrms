@@ -28,6 +28,10 @@ use App\Http\Controllers\Admin\Employee\Master\EmployeeTypeController;
 use App\Http\Controllers\Admin\Employee\Master\EmployeeStatusController;
 use App\Http\Controllers\Admin\Holiday\HolidayController;
 use App\Http\Controllers\Admin\Shift\ShiftChangeRequestController;
+use App\Http\Controllers\Admin\Attendance\PermissionController;
+use App\Http\Controllers\Admin\Attendance\CompoffController;
+use App\Http\Controllers\Admin\Attendance\AttendanceController;
+use App\Http\Controllers\Admin\Attendance\AttendanceApprovalController;
 use App\Http\Controllers\Admin\Leave\Master\LeaveTypeController;
 use App\Http\Controllers\Admin\Leave\Master\LeaveStatusController;
 use App\Http\Controllers\Admin\Leave\LeaveController;
@@ -805,6 +809,78 @@ Route::middleware(['securityheader'])->group(function () {
                         Route::post('approval/submit', 'approvalSubmit');
 
                         Route::post('employee-details', 'employeeDetails');
+                    });
+            });
+
+            /**
+             *  attendance management
+             */
+            Route::group(['prefix' => 'attendance-management/'], function () {
+
+                Route::controller(PermissionController::class)
+                    ->prefix('permission')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('edit/{id}', 'edit');
+                        Route::post('edit/submit', 'update');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::get('approval/{id}', 'approval');
+                        Route::post('approval/submit', 'approvalSubmit');
+
+                        Route::post('employee-details', 'employeeDetails');
+                    });
+
+                Route::controller(CompoffController::class)
+                    ->prefix('compo-off')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('edit/{id}', 'edit');
+                        Route::post('edit/submit', 'update');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::get('approval/{id}', 'approval');
+                        Route::post('approval/submit', 'approvalSubmit');
+
+                        Route::post('employee-details', 'employeeDetails');
+                    });
+
+                Route::controller(AttendanceController::class)
+                    ->prefix('daily-attendance')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::get('missed', 'missed');
+                        Route::post('missed/submit', 'missedSubmit');
+                    });
+
+                Route::controller(AttendanceApprovalController::class)
+                    ->prefix('attendance-approval')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('bulk-decide', 'bulkDecide');
                     });
             });
 

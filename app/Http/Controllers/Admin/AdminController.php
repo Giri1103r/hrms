@@ -50,75 +50,9 @@ class AdminController extends Controller
                 $user = Auth::user();
                 $data = [];
 
-                if (CheckUserRole(ROLE_SUPERADMIN) || CheckUserRole(ROLE_ADMIN) || CheckUserRole(ROLE_EHS_HEAD) ||  CheckUserRole(ROLE_DASHBOARD_VIEWER)) {
-                    $masterLink = [
-                        [
-                            'link' => 'company/list',
-                            'name' => 'Company',
-                            'count' => gettotalCount('company'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-                        [
-                            'link' => 'location/list',
-                            'name' => 'Location',
-                            'count' => gettotalCount('location'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-                        [
-                            'link' => 'unit/list',
-                            'name' => 'Unit',
-                            'count' => gettotalCount('unit'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-
-                        [
-                            'link' => 'department/list',
-                            'name' => 'Department',
-                            'count' => gettotalCount('department'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-
-
-                        [
-                            'link' => 'employee/list',
-                            'name' => 'Employees',
-                            'count' => gettotalCount('employee'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-
-                        [
-                            'link' => 'work/list',
-                            'name' => 'Workers',
-                            'count' => gettotalCount('work'),
-                            'icon' => 'bx bx-message-square-detail',
-                            'icon_color' => 'text-primary',
-                        ],
-
-                    ];
-
-                    $companyList  = $this->company->where('status', '1')->get();
-                    $data = [
-                        'masterLink' => $masterLink,
-                        'companyList' => $companyList,
-                    ];
-                }
-
-
-                if (
-                    CheckUserRole(ROLE_SUPERADMIN) ||
-                    CheckUserRole(ROLE_ADMIN) ||
-                    CheckUserRole(ROLE_EHS_HEAD) ||
-                    CheckUserRole(ROLE_DASHBOARD_VIEWER)
-                ) {
-                    return view('admin.dashboard', $data);
-                } else {
+               
                     return view('admin.userdashboard', $data);
-                }
+                
             }
         } catch (\Exception $ex) {
             report($ex);

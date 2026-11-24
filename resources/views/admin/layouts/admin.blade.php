@@ -474,6 +474,21 @@
     <!-- App js-->
     <script src="{{ url('public/assets/js/app.min.js') }}"></script>
 
+    <script nonce="projectcab">
+        /* Condensed sidebar's flyout submenu only shows on CSS :hover, which never
+           fires on a touch screen. Tapping a parent icon already toggles Bootstrap's
+           collapse (that's what data-bs-toggle="collapse" does) — mirror that open/
+           closed state onto a plain class so brand-theme.css can show the flyout for
+           tap the same way it already does for desktop hover. */
+        $(function() {
+            $('#sidebar-menu .collapse').on('show.bs.collapse', function() {
+                $(this).closest('li').addClass('menu-flyout-open');
+            }).on('hide.bs.collapse', function() {
+                $(this).closest('li').removeClass('menu-flyout-open');
+            });
+        });
+    </script>
+
     <script src="{{ public_plugins('sweetalert/SweetAlertFull.js') }}"></script>
     <script src="{{ public_plugins('jqueryvalidation/jquery.validate.min.js') }}"></script>
     <script src="{{ public_plugins('jqueryvalidation/additional-methods.min.js') }}"></script>

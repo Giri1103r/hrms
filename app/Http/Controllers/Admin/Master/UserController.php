@@ -235,14 +235,6 @@ class UserController extends Controller
         $where = $whereIn = array();
 
         switch ($userrole) {
-            case "job_owner":
-                $whereIn = array(
-                    ROLE_JOBOWNER
-                );
-                $where = array(
-                    'emp_department_id' => $department,
-                );
-                break;
             default:
                 $whereIn = array();
                 $where = array();

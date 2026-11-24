@@ -321,11 +321,7 @@ class LeaveController extends Controller
 
     /* ------------------------------------------------------------------ */
 
-    /**
-     * Validate an application. Returns [validator, failed?, resolved data
-     * for LeaveRequest::apply()/revise()]. The resolved data is built by the
-     * after() hook, so validation runs here before it is returned.
-     */
+   
     private function validateLeave(Request $request, $employee, ?LeaveRequest $existing = null): array
     {
         $resolved = [];

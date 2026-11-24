@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'main_menu' => 'Main Menu',
     'add' => 'Add',
     'import' => 'Import',
     'export' => 'Export',
