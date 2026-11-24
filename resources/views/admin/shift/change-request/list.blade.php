@@ -11,7 +11,8 @@
                     <h4 class="card-title"></h4>
                     <div class="d-flex flex-wrap justify-content-end gap-2 p-2">
                         <x-button-filter dataId="" class="search me-1" href=""></x-button-filter>
-                        <x-button-add href="{{ admin_url('shift-management/shift-change-request/add') }}"></x-button-add>
+                        <x-button-add dataId="" class="add btn btn-primary ms-1"
+                            href="{{ admin_url('shift-management/shift-change-request/add') }}">{{ __('common.add') }}</x-button-add>
                     </div>
                     <div id="search" class="collapse">
                         <form action="" id="formsearch">

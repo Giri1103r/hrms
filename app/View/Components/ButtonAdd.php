@@ -16,7 +16,7 @@ class ButtonAdd extends Component
      public $class;
      public $href;
 
-    public function __construct($dataId, $class , $href)
+    public function __construct($dataId = '', $class = '', $href = '')
     {
 
         $this->dataId = $dataId;
