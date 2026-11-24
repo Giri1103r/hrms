@@ -52,6 +52,13 @@
                                     </div>
 
                                     <div class="mb-3 col-md-4 form-input">
+                                        <label class="form-label view_label">{{ __('Monthly Credit') }}</label>
+                                        <div class="view_data">
+                                            {{ \App\Models\Leave\LeaveRequest::formatDays($leavetype->monthly_credit ?? 0) }} day(s) per month, resets every year
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-md-4 form-input">
                                         <label class="form-label view_label">{{ __('common.created_by') }}</label>
                                         <div class="view_data">
                                             {{ getusername($leavetype->created_by) }}

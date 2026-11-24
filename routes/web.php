@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\Holiday\HolidayController;
 use App\Http\Controllers\Admin\Shift\ShiftChangeRequestController;
 use App\Http\Controllers\Admin\Leave\Master\LeaveTypeController;
 use App\Http\Controllers\Admin\Leave\Master\LeaveStatusController;
+use App\Http\Controllers\Admin\Leave\LeaveController;
 
 
 
@@ -757,6 +758,27 @@ Route::middleware(['securityheader'])->group(function () {
                             Route::post('unique', 'Uniquecheck');
                         });
                 });
+
+                Route::controller(LeaveController::class)
+                    ->prefix('leave')
+                    ->group(function () {
+
+                        Route::get('list', 'index');
+                        Route::post('list', 'index');
+
+                        Route::get('add', 'add');
+                        Route::post('add/submit', 'store');
+
+                        Route::get('edit/{id}', 'edit');
+                        Route::post('edit/submit', 'update');
+
+                        Route::get('view/{id}', 'view');
+
+                        Route::get('approval/{id}', 'approval');
+                        Route::post('approval/submit', 'approvalSubmit');
+
+                        Route::post('calculate', 'calculate');
+                    });
             });
 
             /**

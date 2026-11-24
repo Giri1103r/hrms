@@ -60,6 +60,9 @@ class LeaveTypeController extends Controller
                             }
                             return $text;
                         })
+                        ->addColumn('monthly_credit', function ($row) {
+                            return \App\Models\Leave\LeaveRequest::formatDays($row->monthly_credit) . ' / month';
+                        })
                         ->addColumn('created_at', function ($row) {
                             return Displaydatetimeformat($row->created_at);
                         })
@@ -113,10 +116,16 @@ class LeaveTypeController extends Controller
 
             $rules = [
                 'leave_type_name' => 'required|unique:masters_leave_type,leave_type_name',
+                'monthly_credit' => 'required|numeric|min:0|max:31|multiple_of:0.5',
             ];
             $messages = [
                 'leave_type_name.required' => 'Please Enter Leave Type Name',
                 'leave_type_name.unique' => 'Leave Type Name should be unique',
+                'monthly_credit.required' => 'Please Enter Monthly Credit',
+                'monthly_credit.numeric' => 'Monthly Credit must be a number',
+                'monthly_credit.min' => 'Monthly Credit cannot be negative',
+                'monthly_credit.max' => 'Monthly Credit cannot be more than 31 days',
+                'monthly_credit.multiple_of' => 'Monthly Credit must be in steps of 0.5 days',
             ];
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
@@ -195,10 +204,16 @@ class LeaveTypeController extends Controller
             $id = decryptId($request->id);
             $rules = [
                 'leave_type_name' => 'required|unique:masters_leave_type,leave_type_name,' . $id . ',id',
+                'monthly_credit' => 'required|numeric|min:0|max:31|multiple_of:0.5',
             ];
             $messages = [
                 'leave_type_name.required' => 'Please Enter Leave Type Name',
                 'leave_type_name.unique' => 'Leave Type Name should be unique',
+                'monthly_credit.required' => 'Please Enter Monthly Credit',
+                'monthly_credit.numeric' => 'Monthly Credit must be a number',
+                'monthly_credit.min' => 'Monthly Credit cannot be negative',
+                'monthly_credit.max' => 'Monthly Credit cannot be more than 31 days',
+                'monthly_credit.multiple_of' => 'Monthly Credit must be in steps of 0.5 days',
             ];
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {

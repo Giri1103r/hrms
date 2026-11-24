@@ -53,6 +53,18 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-group form-input">
+                                                    <label class="form-label require" for="monthly_credit">Monthly Credit (days)</label>
+                                                    <input type="number" name="monthly_credit" id="monthly_credit"
+                                                        class="form-control @error('monthly_credit') is-invalid @enderror"
+                                                        placeholder="Monthly Credit" min="0" max="31" step="0.5"
+                                                        value="{{ old('monthly_credit', 1) }}">
+                                                    <small class="text-muted">Credited at the start of every month. Unused leave is usable until 31 Dec and resets on 1 Jan.</small>
+                                                    @error('monthly_credit') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <hr>
                                         <div class="submit-button" style="text-align: right;">
@@ -88,6 +100,13 @@
         $(function() {
             $('#leavetypeadd').validate({
                 rules: {
+                    monthly_credit: {
+                        required: true,
+                        number: true,
+                        min: 0,
+                        max: 31,
+                        step: 0.5,
+                    },
                     leave_type_name: {
                         required: true,
                         maxlength: 70,
@@ -104,6 +123,13 @@
 
                 },
                 messages: {
+                    monthly_credit: {
+                        required: "Monthly Credit is Required",
+                        number: "Monthly Credit must be a number",
+                        min: "Monthly Credit cannot be negative",
+                        max: "Monthly Credit cannot be more than 31 days",
+                        step: "Monthly Credit must be in steps of 0.5 days",
+                    },
                     leave_type_name: {
                         required: "{{ __('Leave Type Name is Required') }}",
                         maxlength: "Maximum Characters should not exceed 70",

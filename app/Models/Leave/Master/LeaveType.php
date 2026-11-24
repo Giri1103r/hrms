@@ -19,6 +19,7 @@ class LeaveType extends Model
     protected $fillable = [
         'lt_code',
         'leave_type_name',
+        'monthly_credit',
         'status',
         'trash',
         'created_by',
@@ -103,6 +104,7 @@ class LeaveType extends Model
         $insert_array = array(
             'lt_code' => '',
             'leave_type_name' => $request->leave_type_name,
+            'monthly_credit' => $request->monthly_credit,
             'created_by' => Auth::id()
         );
         return $this->create($insert_array);
@@ -115,6 +117,7 @@ class LeaveType extends Model
 
         $update_array = array(
             'leave_type_name' => $request->leave_type_name,
+            'monthly_credit' => $request->monthly_credit,
         );
         return $this->where('id', $id)->update($update_array);
     }

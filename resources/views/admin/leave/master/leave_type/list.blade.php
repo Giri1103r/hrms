@@ -66,6 +66,7 @@
                                         <th>{{ __('common.sno') }}</th>
                                         <th>Leave Type Id</th>
                                         <th>Leave Type Name</th>
+                                        <th>Monthly Credit</th>
                                         <th>{{ __('common.status') }}</th>
                                         <th>{{ __('common.created_by') }}</th>
                                         <th>{{ __('common.created_date') }}</th>
@@ -148,6 +149,10 @@
                         {
                             data: 'leave_type_name',
                             name: 'leave_type_name'
+                        },
+                        {
+                            data: 'monthly_credit',
+                            name: 'monthly_credit'
                         },
 
                         {
