@@ -343,9 +343,7 @@ class LeaveTypeController extends Controller
 
             $filename = "Leave Type Master.pdf";
 
-            /* Hand the PDF back as a response instead of echoing it: mPDF sends
-               its own Content-Length and then returns, so letting the action fall
-               through made the framework append a second body to the download. */
+            
             return response($mpdf->Output($filename, \Mpdf\Output\Destination::STRING_RETURN), 200, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'attachment; filename="' . $filename . '"',
